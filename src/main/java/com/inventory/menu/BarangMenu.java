@@ -55,7 +55,7 @@ public class BarangMenu {
             String nama = InputSanitizer.sanitize(scanner.nextLine());
 
             System.out.print("Stok Barang: ");
-            int stok = Integer.parseInt(scanner.nextLine());
+            int stok = InputSanitizer.sanitizeInt(scanner.nextLine());
 
             System.out.print("Lokasi Barang: ");
             String lokasi = InputSanitizer.sanitize(scanner.nextLine());
@@ -85,7 +85,7 @@ public class BarangMenu {
     private void manageDetailBarang() {
         try {
             System.out.print("Masukkan ID Barang: ");
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = InputSanitizer.sanitizeInt(scanner.nextLine());
 
             Barang barang = controller.getBarangById(id);
 
@@ -129,7 +129,7 @@ public class BarangMenu {
     private void kurangiStok(int id) {
         try {
             System.out.print("Jumlah pengurangan stok: ");
-            int jumlah = Integer.parseInt(scanner.nextLine());
+            int jumlah = InputSanitizer.sanitizeInt(scanner.nextLine());
             controller.kurangiStok(id, jumlah);
             System.out.println("Stok berhasil dikurangi.");
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class BarangMenu {
             barang.setNama(InputSanitizer.sanitize(scanner.nextLine()));
 
             System.out.print("Stok baru: ");
-            barang.setStok(Integer.parseInt(scanner.nextLine()));
+            barang.setStok(InputSanitizer.sanitizeInt(scanner.nextLine()));
 
             System.out.print("Lokasi baru: ");
             barang.setLokasi(InputSanitizer.sanitize(scanner.nextLine()));
