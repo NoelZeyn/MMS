@@ -17,7 +17,7 @@ public class AuthService {
         if (user == null) {
             throw new AuthException("Username atau Password salah");
         }
-        
+
         String hashedInput = PasswordHasher.hash(password);
         if (!hashedInput.equals(user.getPasswordHash())) {
             throw new AuthException("Password salah");
@@ -31,11 +31,12 @@ public class AuthService {
         return user;
     }
 
-    public void register(User user, String rawPassword, String role) throws Exception {
+    public void register(String NID, String username, String rawPassword, String role) throws Exception {
+        if (userRepository.findByUsername(username) != null) {
+            throw new Exception("Username sudah digunakan!");
+        }
         String hashedPassword = PasswordHasher.hash(rawPassword);
-        user.setPasswordHash(hashedPassword);
-        user.setRole(role);
-        user.setStatus("PENDING");
-        userRepository.register(user);
+        User newUser = new User(0, username, NID, hashedPassword, role.toUpperCase(), "PENDING");
+        userRepository.register(newUser);
     }
 }

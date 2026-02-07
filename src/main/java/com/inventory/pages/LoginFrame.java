@@ -65,7 +65,7 @@ public class LoginFrame extends JFrame {
         // Input Section
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(0, 45));
-        usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username atau NID");
+        usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
         gbc.gridy = 2; gbc.insets = new Insets(5, 35, 12, 35);
         card.add(usernameField, gbc);
 
@@ -133,7 +133,7 @@ public class LoginFrame extends JFrame {
             new MainMenuFrame(user).setVisible(true);
             this.dispose();
         } catch (Exception e) {
-            showFieldError("Kredensial Salah: " + e.getMessage());
+            showFieldError(e.getMessage());
         }
     }
 

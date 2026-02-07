@@ -12,6 +12,7 @@ public class RegisterFrame extends JFrame {
     private JTextField nidField; 
     private JTextField userField;
     private JPasswordField passField;
+    private JComboBox<String> roleComboBox;
     private JButton registerButton;
     private final AuthService authService;
 
@@ -67,7 +68,14 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 3;
         card.add(passField, gbc);
 
-        // --- 4. Register Button ---
+        // --- 4. Role ---
+        roleComboBox = new JComboBox<>(new String[]{"User", "Admin", "Manager"});
+        roleComboBox.setPreferredSize(new Dimension(0, 40));
+        gbc.gridy = 4;
+        gbc.insets = new Insets(5, 30, 5, 30);
+        card.add(roleComboBox, gbc);
+
+        // --- 5. Register Button ---
         registerButton = new JButton("Daftar Sekarang");
         registerButton.setBackground(UIConfig.PRIMARY);
         registerButton.setForeground(Color.WHITE);
@@ -76,11 +84,11 @@ public class RegisterFrame extends JFrame {
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         registerButton.putClientProperty(FlatClientProperties.STYLE, "borderWidth: 0; focusWidth: 0");
         
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.insets = new Insets(25, 30, 10, 30);
         card.add(registerButton, gbc);
 
-        // --- 5. Footer (Pake UIComponents) ---
+        // --- 6. Footer (Pake UIComponents) ---
         JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         footer.setOpaque(false);
         footer.add(new JLabel("Sudah punya akun?"));
@@ -88,7 +96,7 @@ public class RegisterFrame extends JFrame {
         JButton loginLinkBtn = UIComponents.createLinkButton("Login Sekarang");
         footer.add(loginLinkBtn);
 
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.insets = new Insets(10, 30, 20, 30);
         card.add(footer, gbc);
 
@@ -117,19 +125,20 @@ public class RegisterFrame extends JFrame {
         return f;
     }
 
+
     private void handleRegister() {
         String nid = nidField.getText();
         String user = userField.getText();
         String pass = new String(passField.getPassword());
+        String role = (String) roleComboBox.getSelectedItem();
 
-        if (nid.isEmpty() || user.isEmpty() || pass.isEmpty()) {
+        if (nid.isEmpty() || user.isEmpty() || pass.isEmpty() || role == null) {
             JOptionPane.showMessageDialog(this, "Harap lengkapi semua data!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Contoh integrasi service
         try {
-            // authService.register(nid, user, pass); 
+            authService.register(nid, user, pass, role); 
             JOptionPane.showMessageDialog(this, "Akun " + user + " berhasil didaftarkan!");
             new LoginFrame().setVisible(true);
             this.dispose();
