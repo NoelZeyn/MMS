@@ -106,6 +106,7 @@ public class BarangMenu {
                 switch (choice) {
                     case "1":
                         kurangiStok(barang.getId());
+                        barang = controller.getBarangById(barang.getId());
                         break;
                     case "2":
                         perbaruiBarang(barang);
