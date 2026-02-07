@@ -16,6 +16,28 @@ public class Peminjaman {
         this.jumlah = jumlah;
         this.tanggalPinjam = LocalDate.now();
     }
+    public Peminjaman(Barang barang, User peminjam, int jumlah) {
+        this.barang = barang;
+        this.peminjam = peminjam;
+        this.jumlah = jumlah;
+        this.tanggalPinjam = LocalDate.now();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public User getPeminjam() {
+        return peminjam;
+    }
+
+    public void setPeminjam(User peminjam) {
+        this.peminjam = peminjam;
+    }
+
+    public LocalDate getTanggalPinjam() {
+        return tanggalPinjam;
+    }
 
     public Barang getBarang() {
         return barang;

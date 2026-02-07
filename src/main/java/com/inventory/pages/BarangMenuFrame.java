@@ -89,7 +89,7 @@ public class BarangMenuFrame extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
 
         // Events
-        addButton.addActionListener(e -> tambahBarang());
+        addButton.addActionListener(e -> insertBarang());
         viewButton.addActionListener(e -> lihatBarang());
         detailButton.addActionListener(e -> manageDetailBarang());
     }
@@ -115,10 +115,10 @@ public class BarangMenuFrame extends JPanel {
         return btn;
     }
 
-    // [Method tambahBarang, lihatBarang, manageDetailBarang tetap sama seperti kode
+    // [Method insertBarang, lihatBarang, manageDetailBarang tetap sama seperti kode
     // Anda sebelumnya]
 
-    private void tambahBarang() {
+    private void insertBarang() {
         JTextField nameF = new JTextField();
         JTextField stockF = new JTextField();
         JTextField locF = new JTextField();

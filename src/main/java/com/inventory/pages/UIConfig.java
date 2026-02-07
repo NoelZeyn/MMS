@@ -5,17 +5,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UIConfig {
-    // Palet Warna Modern (Indigo & Slate)
+    // Palet Warna Modern (Indigo & Slate) CHATGPT
     public static final Color PRIMARY = new Color(79, 70, 229);
     public static final Color BG_LIGHT = new Color(248, 250, 252);
     public static final Color TEXT_DARK = new Color(15, 23, 42);
 
     public static void setup() {
         try {
-            // Memasang FlatLaf
+            // PASANG FlatLaf JANGAN LUPA
             UIManager.setLookAndFeel(new FlatLightLaf());
             
-            // Global Smoothness (Kelembutan Komponen)
             UIManager.put("Button.arc", 16);
             UIManager.put("Component.arc", 12);
             UIManager.put("TextComponent.arc", 12);

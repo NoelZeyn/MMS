@@ -3,6 +3,7 @@ package main.java.com.inventory.app;
 import main.java.com.inventory.model.User;
 import main.java.com.inventory.pages.BarangMenuFrame;
 import main.java.com.inventory.pages.ReportMenuFrame;
+import main.java.com.inventory.pages.UserManagementFrame;
 import main.java.com.inventory.pages.UIConfig;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -26,26 +27,28 @@ public class MainMenuFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
-private void initContent() {
-    JPanel mainPanel = new JPanel(new BorderLayout());
-    setContentPane(mainPanel);
+    private void initContent() {
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        setContentPane(mainPanel);
 
-    mainPanel.add(createSidebar(), BorderLayout.WEST);
+        mainPanel.add(createSidebar(), BorderLayout.WEST);
 
-    cardLayout = new CardLayout();
-    contentArea = new JPanel(cardLayout);
-    contentArea.setBackground(UIConfig.BG_LIGHT);
+        cardLayout = new CardLayout();
+        contentArea = new JPanel(cardLayout);
+        contentArea.setBackground(UIConfig.BG_LIGHT);
 
-    // --- REGISTER PAGES ---
-    contentArea.add(createPlaceholderPage("DASHBOARD OVERVIEW"), "DASHBOARD");
-    
-    // MASUKKAN BARANG MENU KE SINI SEBAGAI PANEL
-    contentArea.add(new BarangMenuFrame(user), "INVENTORY");
-    
-    contentArea.add(new ReportMenuFrame(user), "REPORTS");
+        // --- REGISTER PAGES ---
+        contentArea.add(createPlaceholderPage("DASHBOARD OVERVIEW"), "DASHBOARD");
+        contentArea.add(new BarangMenuFrame(user), "INVENTORY");
+        contentArea.add(new ReportMenuFrame(user), "REPORTS");
 
-    mainPanel.add(contentArea, BorderLayout.CENTER);
-}
+        if (user.isAdmin() || user.isManager()) {
+            contentArea.add(new UserManagementFrame(user), "MANAGE_USER");
+        }
+
+        mainPanel.add(contentArea, BorderLayout.CENTER);
+    }
+
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel(new BorderLayout());
         sidebar.setBackground(new Color(30, 41, 59));
@@ -55,7 +58,7 @@ private void initContent() {
         brandPanel.setOpaque(false);
         brandPanel.setBorder(new MatteBorder(0, 0, 1, 0, new Color(51, 65, 85)));
         brandPanel.setPreferredSize(new Dimension(0, 80));
-        
+
         JLabel brandLabel = new JLabel("MMS ENTERPRISE", SwingConstants.CENTER);
         brandLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         brandLabel.setForeground(Color.WHITE);
@@ -72,18 +75,24 @@ private void initContent() {
         menuPanel.add(Box.createVerticalStrut(10));
         menuPanel.add(createReportButton());
 
+        if (user.isAdmin() || user.isManager()) {
+            menuPanel.add(Box.createVerticalStrut(10));
+            menuPanel.add(createNavButton("MANAGE USERS", "MANAGE_USER"));
+        }
         JPanel footerPanel = new JPanel(new GridBagLayout());
         footerPanel.setOpaque(false);
         footerPanel.setBorder(new MatteBorder(1, 0, 0, 0, new Color(51, 65, 85)));
         footerPanel.setPreferredSize(new Dimension(0, 100));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1;
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
 
         JLabel nameLabel = new JLabel(user.getUsername().toUpperCase());
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
         nameLabel.setForeground(Color.WHITE);
-        
+
         JLabel roleLabel = new JLabel(user.getRole());
         roleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         roleLabel.setForeground(new Color(148, 163, 184));
@@ -96,9 +105,15 @@ private void initContent() {
         btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLogout.addActionListener(e -> System.exit(0));
 
-        gbc.gridy = 0; gbc.insets = new Insets(0, 20, 2, 20); footerPanel.add(nameLabel, gbc);
-        gbc.gridy = 1; gbc.insets = new Insets(0, 20, 10, 20); footerPanel.add(roleLabel, gbc);
-        gbc.gridy = 2; gbc.insets = new Insets(0, 20, 0, 20); footerPanel.add(btnLogout, gbc);
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 20, 2, 20);
+        footerPanel.add(nameLabel, gbc);
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 20, 10, 20);
+        footerPanel.add(roleLabel, gbc);
+        gbc.gridy = 2;
+        gbc.insets = new Insets(0, 20, 0, 20);
+        footerPanel.add(btnLogout, gbc);
 
         sidebar.add(brandPanel, BorderLayout.NORTH);
         sidebar.add(menuPanel, BorderLayout.CENTER);
@@ -121,12 +136,13 @@ private void initContent() {
         btn.setMargin(new Insets(0, 20, 0, 0));
 
         btn.addActionListener(e -> cardLayout.show(contentArea, cardName));
-        
+
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(51, 65, 85));
                 btn.setForeground(Color.WHITE);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(30, 41, 59));
                 btn.setForeground(new Color(203, 213, 225));
@@ -150,12 +166,13 @@ private void initContent() {
         btn.setMargin(new Insets(0, 20, 0, 0));
 
         btn.addActionListener(e -> new BarangMenuFrame(user).setVisible(true));
-        
+
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(51, 65, 85));
                 btn.setForeground(Color.WHITE);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(30, 41, 59));
                 btn.setForeground(new Color(203, 213, 225));
@@ -165,7 +182,7 @@ private void initContent() {
         return btn;
     }
 
-        private JButton createReportButton() {
+    private JButton createReportButton() {
         JButton btn = createNavButton("REPORTS", "REPORTS");
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -179,12 +196,13 @@ private void initContent() {
         btn.setMargin(new Insets(0, 20, 0, 0));
 
         btn.addActionListener(e -> new BarangMenuFrame(user).setVisible(true));
-        
+
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(51, 65, 85));
                 btn.setForeground(Color.WHITE);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn.setBackground(new Color(30, 41, 59));
                 btn.setForeground(new Color(203, 213, 225));
@@ -204,5 +222,4 @@ private void initContent() {
         return p;
     }
 
-    
 }

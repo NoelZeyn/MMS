@@ -15,7 +15,16 @@ public class User {
         this.NID = NID;
         this.passwordHash = passwordHash;
         this.role = role;
-        this.status = status;   
+        this.status = status;
+    }
+
+        public User(String username, String NID, String passwordHash, String role, String status) {
+        // this.id = id;
+        this.username = username;
+        this.NID = NID;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.status = status;
     }
 
     public int getId() {
@@ -37,7 +46,7 @@ public class User {
     public void setNID(String NID) {
         this.NID = NID;
     }
-    
+
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -61,11 +70,20 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
     public boolean isAdmin() {
         return "ADMIN".equals(role);
     }
+
     public boolean isManager() {
         return "MANAGER".equals(role);
+    }
+
+    public boolean isStaff() {
+        return "STAFF".equals(role);
+    }
+
+    public boolean isUser() {
+        return "USER".equals(role);
     }
 }
