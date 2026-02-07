@@ -22,12 +22,28 @@ public class UserRepository {
                 return new User(
                         rs.getInt("id"),
                         rs.getString("username"),
+                        rs.getString("NID"),
                         rs.getString("password_hash"),
                         rs.getString("role"),
                         rs.getString("status")
                 );
             }
             return null;
+        }
+    }
+    public void register(User user) throws Exception {
+        String sql = "INSERT INTO users (username, NID, password_hash, role, status) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getNID());
+            ps.setString(3, user.getPasswordHash());
+            ps.setString(4, user.getRole());
+            ps.setString(5, user.getStatus());
+
+            ps.executeUpdate();
         }
     }
 }

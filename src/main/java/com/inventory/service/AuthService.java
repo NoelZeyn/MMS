@@ -15,9 +15,9 @@ public class AuthService {
 
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new AuthException("Username tidak ditemukan");
+            throw new AuthException("Username atau Password salah");
         }
-
+        
         String hashedInput = PasswordHasher.hash(password);
         if (!hashedInput.equals(user.getPasswordHash())) {
             throw new AuthException("Password salah");
@@ -29,5 +29,13 @@ public class AuthService {
         }
 
         return user;
+    }
+
+    public void register(User user, String rawPassword, String role) throws Exception {
+        String hashedPassword = PasswordHasher.hash(rawPassword);
+        user.setPasswordHash(hashedPassword);
+        user.setRole(role);
+        user.setStatus("PENDING");
+        userRepository.register(user);
     }
 }
