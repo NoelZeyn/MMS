@@ -1,0 +1,24 @@
+
+
+Version:	3.50
+CmdLine:	D:\JavaPro\MMS\InventoryApp.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	D:\JavaPro\MMS\.
+Requires JDK:	Yes
+Requires 64-Bit: Yes
+Java min ver:	1.017.000
+Java max ver:	
+Substitute:	JAVA_HOME = C:\Program Files\Java\jdk-21
+Substitute:	PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\php8.5;C:\ProgramData\ComposerSetup\bin;C:\Program Files\nodejs\;D:\Golang\bin;C:\Program Files\PuTTY\;C:\Program Files\Java\jdk-21\bin;C:\Users\LOQ\AppData\Local\Microsoft\WindowsApps;C:\Users\LOQ\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\Scripts;C:\Windows\System32\nvidia-smi.exe;C:\Program Files\Git\bin;C:\Users\LOQ\.dotnet\tools;C:\Users\LOQ\AppData\Local\GitHubDesktop\bin;C:\Users\LOQ\AppData\Roaming\Composer\vendor\bin;C:\Users\LOQ\AppData\Roaming\npm;C:\Users\LOQ\go\bin;C:\Program Files\Java\jdk-21\bin;C:\Users\LOQ\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin;;C:\Program Files\Java\jdk-21\bin
+JRE paths:	C:\Program Files\Java\jdk-21;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\php8.5;C:\ProgramData\ComposerSetup\bin;C:\Program Files\nodejs\;D:\Golang\bin;C:\Program Files\PuTTY\;C:\Program Files\Java\jdk-21\bin;C:\Users\LOQ\AppData\Local\Microsoft\WindowsApps;C:\Users\LOQ\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\Scripts;C:\Windows\System32\nvidia-smi.exe;C:\Program Files\Git\bin;C:\Users\LOQ\.dotnet\tools;C:\Users\LOQ\AppData\Local\GitHubDesktop\bin;C:\Users\LOQ\AppData\Roaming\Composer\vendor\bin;C:\Users\LOQ\AppData\Roaming\npm;C:\Users\LOQ\go\bin;C:\Program Files\Java\jdk-21\bin;C:\Users\LOQ\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin;;C:\Program Files\Java\jdk-21\bin
+Check launcher:	C:\Program Files\Java\jdk-21\bin\javaw.exe (OK)
+Check javac:	C:\Program Files\Java\jdk-21\bin\javac.exe (OK)
+Version string: 1.021.000_008 / 64-Bit (OK)
+Main class:	main.java.com.inventory.app.InventoryApp
+Add classpath:	lib\flatlaf-demo-3.7.jar
+Add classpath:	lib\mysql-connector-j-9.6.0.jar
+Launcher:	C:\Program Files\Java\jdk-21\bin\javaw.exe
+Launcher args:	-classpath "D:\JavaPro\MMS\InventoryApp.exe;lib\flatlaf-demo-3.7.jar;lib\mysql-connector-j-9.6.0.jar" main.java.com.inventory.app.InventoryApp
+Args length:	142/32768 chars
+Exit code:	0
