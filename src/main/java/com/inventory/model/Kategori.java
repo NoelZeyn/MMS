@@ -1,11 +1,11 @@
 package main.java.com.inventory.model;
 public class Kategori {
     private int id;
-    private String nama;
+    private String name;
 
-    public Kategori(int id, String nama) {
+    public Kategori(int id, String name) {
         this.id = id;
-        this.nama = nama;
+        this.name = name;
     }
 
     public int getId() {
@@ -13,6 +13,6 @@ public class Kategori {
     }
 
     public String getName() {
-        return nama;
+        return name;
     }
 }

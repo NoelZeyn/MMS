@@ -2,23 +2,23 @@ package main.java.com.inventory.model;
 
 public class Bidang {
     private int id;
-    private String nama;
+    private String name;
 
-    public Bidang(int id, String nama) {
+    public Bidang(int id, String name) {
         this.id = id;
-        this.nama = nama;
+        this.name = name;
     }
-    public Bidang (String nama) {
-        this.nama = nama;
+    public Bidang (String name) {
+        this.name = name;
     }
     public int getId() {
         return id;
     }
     public String getName() {
-        return nama;
+        return name;
     }
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

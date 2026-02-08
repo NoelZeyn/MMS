@@ -117,9 +117,6 @@ public class BarangMenuFrame extends JPanel {
         return btn;
     }
 
-    // [Method insertBarang, lihatBarang, manageDetailBarang tetap sama seperti kode
-    // Anda sebelumnya]
-
     private void insertBarang() {
         JTextField nameF = new JTextField();
         JTextField stockF = new JTextField();
@@ -139,20 +136,16 @@ public class BarangMenuFrame extends JPanel {
                 JOptionPane.PLAIN_MESSAGE);
         if (option == JOptionPane.OK_OPTION) {
             try {
-                // 1. Masukkan barang terlebih dahulu
                 Barang newBarang = new Barang(nameF.getText(), Integer.parseInt(stockF.getText()), locF.getText());
                 controller.insertBarang(user, newBarang);
-                // 2. Ambil ID terbaru dari database
                 List<Barang> all = controller.getAllBarang();
                 int latestId = all.isEmpty() ? 0 : all.get(all.size() - 1).getId();
 
-                // 3. Simpan Log dengan ID yang valid
                 activityController.insertLogActivity(user, "CREATE", "BARANG", latestId,
                         "New item added: " + newBarang.getName());
 
                 JOptionPane.showMessageDialog(this, "Record successfully created.");
             } catch (Exception ex) {
-                ex.printStackTrace(); // LIHAT CONSOLE: Apakah ada error di sini?
                 showEnterpriseError("Data Error: " + ex.getMessage());
             }
         }
@@ -346,7 +339,7 @@ public class BarangMenuFrame extends JPanel {
                         String newNama = n.getText();
                         int newStok = Integer.parseInt(s.getText());
                         String newLokasi = l.getText();
-                        barang.setNama(newNama);
+                        barang.setName(newNama);
                         barang.setStok(newStok);
                         barang.setLokasi(newLokasi);
                         controller.updateBarang(user, barang);

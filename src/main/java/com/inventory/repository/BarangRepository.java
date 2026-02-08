@@ -12,7 +12,7 @@ public class BarangRepository {
 
     public void insert(Barang barang) {
         String sql = """
-                    INSERT INTO barang (nama, stok, lokasi)
+                    INSERT INTO barang (name, stok, lokasi)
                     VALUES (?, ?, ?)
                 """;
 
@@ -31,7 +31,7 @@ public class BarangRepository {
     public void update(Barang barang) {
         String sql = """
                     UPDATE barang
-                    SET nama = ?, stok = ?, lokasi = ?
+                    SET name = ?, stok = ?, lokasi = ?
                     WHERE id = ?
                 """;
 
@@ -89,7 +89,7 @@ public class BarangRepository {
     }
 
     public List<Barang> getAllBarang() throws Exception {
-        String sql = "SELECT id, nama, stok, lokasi FROM barang";
+        String sql = "SELECT id, name, stok, lokasi FROM barang";
         List<Barang> barangList = new ArrayList<>();
 
         try (Connection conn = DatabaseUtil.getConnection();
@@ -99,7 +99,7 @@ public class BarangRepository {
             while (rs.next()) {
                 barangList.add(new Barang(
                         rs.getInt("id"),
-                        rs.getString("nama"),
+                        rs.getString("name"),
                         rs.getInt("stok"),
                         rs.getString("lokasi")));
             }
@@ -108,7 +108,7 @@ public class BarangRepository {
     }
 
     public Barang getBarangById(int id) throws Exception {
-        String sql = "SELECT id, nama, stok, lokasi FROM barang WHERE id = ?";
+        String sql = "SELECT id, name, stok, lokasi FROM barang WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -119,7 +119,7 @@ public class BarangRepository {
                 if (rs.next()) {
                     return new Barang(
                             rs.getInt("id"),
-                            rs.getString("nama"),
+                            rs.getString("name"),
                             rs.getInt("stok"),
                             rs.getString("lokasi"));
                 }

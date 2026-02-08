@@ -3,20 +3,20 @@ package main.java.com.inventory.model;
 public class Barang {
 
     private int id;
-    private String nama;
+    private String name;
     private int stok;
     private String lokasi;
 
-    public Barang(String nama, int stok, String lokasi) {
+    public Barang(String name, int stok, String lokasi) {
         // this.id = id;
-        this.nama = nama;
+        this.name = name;
         this.stok = stok;
         this.lokasi = lokasi;
     }
     // Constructor untuk READ dari DB (pakai id)
-    public Barang(int id, String nama, int stok, String lokasi) {
+    public Barang(int id, String name, int stok, String lokasi) {
         this.id = id;
-        this.nama = nama;
+        this.name = name;
         this.stok = stok;
         this.lokasi = lokasi;
     }
@@ -27,7 +27,7 @@ public class Barang {
     
 
     public String getName() {
-        return nama;
+        return name;
     }
 
     public int getStok() {
@@ -45,8 +45,8 @@ public class Barang {
         this.stok += jumlah;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setStok(int stok) {

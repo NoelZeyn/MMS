@@ -140,7 +140,7 @@ public class BarangMenu {
     private void perbaruiBarang(Barang barang) {
         try {
             System.out.print("Nama baru: ");
-            barang.setNama(InputSanitizer.sanitize(scanner.nextLine()));
+            barang.setName(InputSanitizer.sanitize(scanner.nextLine()));
 
             System.out.print("Stok baru: ");
             barang.setStok(InputSanitizer.sanitizeInt(scanner.nextLine()));
