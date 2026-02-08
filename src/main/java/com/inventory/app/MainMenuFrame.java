@@ -1,12 +1,16 @@
 package main.java.com.inventory.app;
 
 import main.java.com.inventory.model.User;
+import main.java.com.inventory.pages.UI.DashboardFrame; // Import Dashboard sungguhan
 import main.java.com.inventory.pages.Inventory.BarangMenuFrame;
+import main.java.com.inventory.pages.Requisition.RequisitionFrame;
 import main.java.com.inventory.pages.Management.UserManagementFrame;
 import main.java.com.inventory.pages.Report.ReportMenuFrame;
 import main.java.com.inventory.pages.UI.UIConfig;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 
@@ -24,7 +28,7 @@ public class MainMenuFrame extends JFrame {
     private void setupFrame() {
         setTitle("MMS ENTERPRISE - Management System");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1100, 700);
+        setSize(1280, 800); // Sedikit lebih lebar untuk kenyamanan Dashboard
         setLocationRelativeTo(null);
     }
 
@@ -32,15 +36,18 @@ public class MainMenuFrame extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         setContentPane(mainPanel);
 
+        // --- SIDEBAR ---
         mainPanel.add(createSidebar(), BorderLayout.WEST);
 
+        // --- CONTENT AREA (CARD LAYOUT) ---
         cardLayout = new CardLayout();
         contentArea = new JPanel(cardLayout);
         contentArea.setBackground(UIConfig.BG_LIGHT);
 
-        // --- REGISTER PAGES ---
-        contentArea.add(createPlaceholderPage("DASHBOARD OVERVIEW"), "DASHBOARD");
+        // Mendaftarkan Halaman Sungguhan
+        contentArea.add(new DashboardFrame(user), "DASHBOARD");
         contentArea.add(new BarangMenuFrame(user), "INVENTORY");
+        contentArea.add(new RequisitionFrame(user), "REQUISITION");
         contentArea.add(new ReportMenuFrame(user), "REPORTS");
 
         if (user.isAdmin() || user.isManager()) {
@@ -52,175 +59,113 @@ public class MainMenuFrame extends JFrame {
 
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel(new BorderLayout());
-        sidebar.setBackground(new Color(30, 41, 59));
+        sidebar.setBackground(new Color(15, 23, 42)); // Warna Slate 900 (Lebih modern)
         sidebar.setPreferredSize(new Dimension(260, 0));
 
+        // Brand Area (Logo/Nama Perusahaan)
         JPanel brandPanel = new JPanel(new BorderLayout());
         brandPanel.setOpaque(false);
-        brandPanel.setBorder(new MatteBorder(0, 0, 1, 0, new Color(51, 65, 85)));
-        brandPanel.setPreferredSize(new Dimension(0, 80));
-
-        JLabel brandLabel = new JLabel("MMS ENTERPRISE", SwingConstants.CENTER);
-        brandLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        brandPanel.setBorder(new EmptyBorder(30, 25, 30, 25));
+        
+        JLabel brandLabel = new JLabel("MMS ENTERPRISE");
+        brandLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         brandLabel.setForeground(Color.WHITE);
         brandPanel.add(brandLabel, BorderLayout.CENTER);
 
+        // Menu Area
         JPanel menuPanel = new JPanel();
         menuPanel.setOpaque(false);
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 15, 20, 15));
+        menuPanel.setBorder(new EmptyBorder(0, 15, 20, 15));
 
+        // Menambahkan Navigasi
         menuPanel.add(createNavButton("DASHBOARD", "DASHBOARD"));
-        menuPanel.add(Box.createVerticalStrut(10));
-        menuPanel.add(createInventoryButton());
-        menuPanel.add(Box.createVerticalStrut(10));
-        menuPanel.add(createReportButton());
+        menuPanel.add(Box.createVerticalStrut(8));
+        menuPanel.add(createNavButton("INVENTORY", "INVENTORY"));
+        menuPanel.add(Box.createVerticalStrut(8));
+        menuPanel.add(createNavButton("PURCHASE REQUEST", "REQUISITION"));
+        menuPanel.add(Box.createVerticalStrut(8));
+        menuPanel.add(createNavButton("REPORTS", "REPORTS"));
 
         if (user.isAdmin() || user.isManager()) {
-            menuPanel.add(Box.createVerticalStrut(10));
-            menuPanel.add(createNavButton("MANAGE USERS", "MANAGE_USER"));
+            menuPanel.add(Box.createVerticalStrut(25)); // Spasi antar grup
+            JLabel lblAdmin = new JLabel(" ADMINISTRATION");
+            lblAdmin.setFont(new Font("Segoe UI", Font.BOLD, 10));
+            lblAdmin.setForeground(new Color(71, 85, 105));
+            lblAdmin.setBorder(new EmptyBorder(0, 15, 10, 0));
+            menuPanel.add(lblAdmin);
+            menuPanel.add(createNavButton("USER MANAGEMENT", "MANAGE_USER"));
         }
-        JPanel footerPanel = new JPanel(new GridBagLayout());
-        footerPanel.setOpaque(false);
-        footerPanel.setBorder(new MatteBorder(1, 0, 0, 0, new Color(51, 65, 85)));
-        footerPanel.setPreferredSize(new Dimension(0, 100));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
+        sidebar.add(brandPanel, BorderLayout.NORTH);
+        sidebar.add(menuPanel, BorderLayout.CENTER);
+        sidebar.add(createFooter(), BorderLayout.SOUTH);
 
+        return sidebar;
+    }
+
+    private JPanel createFooter() {
+        JPanel footer = new JPanel(new BorderLayout());
+        footer.setOpaque(false);
+        footer.setBorder(new CompoundBorder(
+            new MatteBorder(1, 0, 0, 0, new Color(30, 41, 59)),
+            new EmptyBorder(20, 20, 20, 20)
+        ));
+
+        JPanel userDetail = new JPanel(new GridLayout(2, 1));
+        userDetail.setOpaque(false);
+        
         JLabel nameLabel = new JLabel(user.getUsername().toUpperCase());
-        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
         nameLabel.setForeground(Color.WHITE);
 
         JLabel roleLabel = new JLabel(user.getRole());
         roleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         roleLabel.setForeground(new Color(148, 163, 184));
 
-        JButton btnLogout = new JButton("LOGOUT");
-        btnLogout.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        btnLogout.setForeground(new Color(248, 113, 113));
-        btnLogout.setContentAreaFilled(false);
-        btnLogout.setBorder(BorderFactory.createLineBorder(new Color(248, 113, 113)));
+        userDetail.add(nameLabel);
+        userDetail.add(roleLabel);
+
+        JButton btnLogout = new JButton("Logout");
         btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnLogout.addActionListener(e -> System.exit(0));
+        btnLogout.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this, "Logout from system?", "Exit", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+        });
 
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0, 20, 2, 20);
-        footerPanel.add(nameLabel, gbc);
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0, 20, 10, 20);
-        footerPanel.add(roleLabel, gbc);
-        gbc.gridy = 2;
-        gbc.insets = new Insets(0, 20, 0, 20);
-        footerPanel.add(btnLogout, gbc);
-
-        sidebar.add(brandPanel, BorderLayout.NORTH);
-        sidebar.add(menuPanel, BorderLayout.CENTER);
-        sidebar.add(footerPanel, BorderLayout.SOUTH);
-
-        return sidebar;
+        footer.add(userDetail, BorderLayout.WEST);
+        footer.add(btnLogout, BorderLayout.EAST);
+        
+        return footer;
     }
 
     private JButton createNavButton(String text, String cardName) {
         JButton btn = new JButton(text);
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btn.setForeground(new Color(203, 213, 225));
-        btn.setBackground(new Color(30, 41, 59));
+        btn.setForeground(new Color(148, 163, 184));
+        btn.setBackground(new Color(15, 23, 42));
         btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setHorizontalAlignment(SwingConstants.LEFT);
-        btn.setMargin(new Insets(0, 20, 0, 0));
+        btn.setMargin(new Insets(0, 15, 0, 0));
 
-        btn.addActionListener(e -> cardLayout.show(contentArea, cardName));
-
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(51, 65, 85));
-                btn.setForeground(Color.WHITE);
+        btn.addActionListener(e -> {
+            cardLayout.show(contentArea, cardName);
+            // Reset semua tombol ke warna standar
+            for (Component c : btn.getParent().getComponents()) {
+                if (c instanceof JButton) {
+                    c.setForeground(new Color(148, 163, 184));
+                    c.setBackground(new Color(15, 23, 42));
+                }
             }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(30, 41, 59));
-                btn.setForeground(new Color(203, 213, 225));
-            }
+            // Highlight tombol yang aktif
+            btn.setForeground(Color.WHITE);
+            btn.setBackground(new Color(30, 41, 59));
         });
 
         return btn;
     }
-
-    private JButton createInventoryButton() {
-        JButton btn = createNavButton("INVENTORY", "INVENTORY");
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btn.setForeground(new Color(203, 213, 225));
-        btn.setBackground(new Color(30, 41, 59));
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setHorizontalAlignment(SwingConstants.LEFT);
-        btn.setMargin(new Insets(0, 20, 0, 0));
-
-        btn.addActionListener(e -> new BarangMenuFrame(user).setVisible(true));
-
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(51, 65, 85));
-                btn.setForeground(Color.WHITE);
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(30, 41, 59));
-                btn.setForeground(new Color(203, 213, 225));
-            }
-        });
-
-        return btn;
-    }
-
-    private JButton createReportButton() {
-        JButton btn = createNavButton("REPORTS", "REPORTS");
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btn.setForeground(new Color(203, 213, 225));
-        btn.setBackground(new Color(30, 41, 59));
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setHorizontalAlignment(SwingConstants.LEFT);
-        btn.setMargin(new Insets(0, 20, 0, 0));
-
-        btn.addActionListener(e -> new BarangMenuFrame(user).setVisible(true));
-
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(51, 65, 85));
-                btn.setForeground(Color.WHITE);
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(30, 41, 59));
-                btn.setForeground(new Color(203, 213, 225));
-            }
-        });
-
-        return btn;
-    }
-
-    private JPanel createPlaceholderPage(String title) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBackground(UIConfig.BG_LIGHT);
-        JLabel l = new JLabel(title, SwingConstants.CENTER);
-        l.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        l.setForeground(new Color(148, 163, 184));
-        p.add(l, BorderLayout.CENTER);
-        return p;
-    }
-
 }

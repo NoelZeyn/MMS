@@ -18,50 +18,33 @@ public class RequisitionService {
         }
     }
 
-    private void validate(Requisition req) {
-        if (req.getUserId() <= 0) {
-            throw new ValidationException("User tidak valid");
-        }
-        if (req.getName() == null || req.getName().isBlank()) {
-            throw new ValidationException("Nama barang wajib diisi");
-        }
-
-        if (req.getQuantity() <= 0) {
-            throw new ValidationException("Quantity harus lebih dari 0");
-        }
-
-        if (req.getUnitPrice() <= 0) {
-            throw new ValidationException("Unit price harus lebih dari Rp.0");
-        }
-
-        // OPTIONAL FIELD HANDLING
-        if (req.getVendor() != null && req.getVendor().isBlank()) {
-            req.setVendor(null);
-        }
-
-        if (req.getJustification() != null && req.getJustification().isBlank()) {
-            req.setJustification(null);
-        }
-
-        // pastikan totalPrice benar
-        int expectedTotal = req.getQuantity() * req.getUnitPrice();
-        if (req.getTotalPrice() != expectedTotal) {
-            req.setTotalPrice(expectedTotal);
-        }
+public void insertRequisition(User user, Requisition requisition) {
+    authorize(user);
+    
+    // Pastikan userId diisi dari user yang sedang login
+    requisition.setUserId(user.getId());
+    
+    // Validasi data (termasuk hitung ulang TotalPrice)
+    validate(requisition);
+    
+    try {
+        repository.insert(requisition);
+    } catch (Exception e) {
+        // Log error asli ke console untuk debug
+        e.printStackTrace(); 
+        throw new ValidationException("Gagal simpan ke Database: " + e.getMessage());
     }
+}
 
-    /* ================= CRUD ================= */
+private void validate(Requisition req) {
+    if (req.getUserId() <= 0) throw new ValidationException("Sesi User tidak valid.");
+    if (req.getName() == null || req.getName().isBlank()) throw new ValidationException("Nama barang wajib diisi.");
+    if (req.getQuantity() <= 0) throw new ValidationException("Quantity harus lebih dari 0.");
+    if (req.getUnitPrice() <= 0) throw new ValidationException("Unit price harus lebih dari 0.");
 
-    public void insertRequisition(User user, Requisition requisition) {
-        authorize(user);
-        requisition.setUserId(user.getId());
-        validate(requisition);
-        try {
-            repository.insert(requisition);
-        } catch (Exception e) {
-            throw new ValidationException("Gagal menyimpan requisition");
-        }
-    }
+    // PAKSA HITUNG TOTAL LAGI (Safety First)
+    req.setTotalPrice(req.getQuantity() * req.getUnitPrice());
+}
 
     public void updateRequisition(User user, Requisition requisition) {
         authorize(user);
@@ -108,7 +91,7 @@ public class RequisitionService {
     }
 
     // public List<Requisition> getByUser(User user) {
-    //     return repository.getByUserId(user.getId());
+    // return repository.getByUserId(user.getId());
     // }
 
 }

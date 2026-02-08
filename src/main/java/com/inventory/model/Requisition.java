@@ -11,10 +11,8 @@ public class Requisition {
     private String vendor;
     private String justification;
 
-    public Requisition(int id, int userId, String name, String specification, int quantity, int unitPrice,
-            int totalPrice,
-            String vendor, String justification) {
-        this.id = id;
+// Constructor untuk INSERT (Tanpa ID)
+    public Requisition(int userId, String name, String specification, int quantity, int unitPrice, int totalPrice, String vendor, String justification) {
         this.userId = userId;
         this.name = name;
         this.specification = specification;
@@ -25,10 +23,9 @@ public class Requisition {
         this.justification = justification;
     }
 
-    public Requisition(String name, int userId, String specification, int quantity, int unitPrice, int totalPrice,
-            String vendor,
-            String justification) {
-        // this.id = id;
+    // Constructor untuk SELECT/UPDATE (Dengan ID)
+    public Requisition(int id, int userId, String name, String specification, int quantity, int unitPrice, int totalPrice, String vendor, String justification) {
+        this.id = id;
         this.userId = userId;
         this.name = name;
         this.specification = specification;
