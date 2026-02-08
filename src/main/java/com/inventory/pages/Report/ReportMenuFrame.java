@@ -126,7 +126,7 @@ public class ReportMenuFrame extends JPanel {
         }
 
         JTable table = new JTable(model);
-        // ... (Styling tabel Anda yang sudah ada tetap di sini)
+        
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines: true; showVerticalLines: false; rowHeight: 32; selectionBackground: #f1f5f9; selectionForeground: #0f172a");
 

@@ -11,6 +11,7 @@ import main.java.com.inventory.service.UserActivityService;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -175,6 +176,18 @@ public class BarangMenuFrame extends JPanel {
         }
 
         JTable table = new JTable(model);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // ID
+        table.getColumnModel()
+                .getColumn(0)
+                .setCellRenderer(centerRenderer);
+
+        // SUB BIDANG ID
+        table.getColumnModel()
+                .getColumn(2)
+                .setCellRenderer(centerRenderer);
 
         table.getModel().addTableModelListener(e -> {
             int row = e.getFirstRow();

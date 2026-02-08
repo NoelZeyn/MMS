@@ -3,6 +3,7 @@ package main.java.com.inventory.pages.Auth;
 import com.formdev.flatlaf.FlatClientProperties;
 import main.java.com.inventory.controller.SubBidangController;
 import main.java.com.inventory.model.SubBidang;
+import main.java.com.inventory.pages.UI.UIComponents;
 import main.java.com.inventory.pages.UI.UIConfig;
 import main.java.com.inventory.service.AuthService;
 import main.java.com.inventory.service.SubBidangService;
@@ -71,7 +72,7 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 3;
         card.add(passField, gbc);
 
-        roleComboBox = new JComboBox<>(new String[]{"USER", "ADMIN", "MANAGER"});
+        roleComboBox = new JComboBox<>(new String[] { "USER", "ADMIN", "MANAGER" });
         roleComboBox.setPreferredSize(new Dimension(0, 40));
         gbc.gridy = 4;
         card.add(roleComboBox, gbc);
@@ -89,12 +90,28 @@ public class RegisterFrame extends JFrame {
         registerButton.setPreferredSize(new Dimension(0, 45));
         registerButton.putClientProperty(
                 FlatClientProperties.STYLE,
-                "borderWidth: 0; focusWidth: 0"
-        );
+                "borderWidth: 0; focusWidth: 0");
 
         gbc.gridy = 6;
         gbc.insets = new Insets(25, 30, 10, 30);
         card.add(registerButton, gbc);
+        // Footer Section (Referensi dari LoginFrame)
+        JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        footer.setOpaque(false);
+
+        footer.add(new JLabel("Sudah punya akun?"));
+
+        JButton loginBtn = UIComponents.createLinkButton("Masuk");
+        loginBtn.addActionListener(e -> {
+            new LoginFrame().setVisible(true);
+            this.dispose();
+        });
+
+        footer.add(loginBtn);
+
+        gbc.gridy = 7;
+        gbc.insets = new Insets(10, 30, 20, 30);
+        card.add(footer, gbc);
 
         contentPane.add(card);
 

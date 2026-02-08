@@ -15,6 +15,7 @@ import main.java.com.inventory.service.UserManagementService;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -249,12 +250,19 @@ public class UserManagementFrame extends JPanel {
         }
 
         JTable table = new JTable(model);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // PENTING ini buat center
+        // ID
+        table.getColumnModel()
+                .getColumn(0)
+                .setCellRenderer(centerRenderer);
 
-        /*
-         * ===============================
-         * ROLE → COMBOBOX
-         * ===============================
-         */
+        // SUB BIDANG ID
+        table.getColumnModel()
+                .getColumn(5)
+                .setCellRenderer(centerRenderer);
+
         JComboBox<String> roleCombo = new JComboBox<>(ROLE_OPTIONS);
         table.getColumnModel()
                 .getColumn(3)
@@ -363,7 +371,7 @@ public class UserManagementFrame extends JPanel {
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
         table.getColumnModel().getColumn(1).setPreferredWidth(150);
         table.getColumnModel().getColumn(2).setPreferredWidth(80);
-        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table.getColumnModel().getColumn(3).setPreferredWidth(80);
 
         JScrollPane scroll = new JScrollPane(table);
         scroll.setPreferredSize(new Dimension(650, 400));
