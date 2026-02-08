@@ -29,7 +29,7 @@ public class SubBidangController {
         service.getSubBidangById(user, targetUserId);
     }
 
-    public void deleteSubBidang(User user, int id) {
-        service.deleteSubBidang(user, id);
+    public void deleteSubBidangById(User user, int id) {
+        service.deleteSubBidangById(user, id);
     }
 }

@@ -14,20 +14,22 @@ public class RequisitionRepository {
 
     public void insert(Requisition requisition) {
         String sql = """
-                    INSERT INTO requisition (name, specification, quantity, unitPrice, totalPrice, vendor, justification)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO requisition (userId, name, specification, quantity, unitPrice, totalPrice, vendor, justification)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, requisition.getName());
-            ps.setString(2, requisition.getSpecification());
-            ps.setInt(3, requisition.getQuantity());
-            ps.setInt(4, requisition.getUnitPrice());
-            ps.setInt(5, requisition.getTotalPrice());
-            ps.setString(6, requisition.getVendor());
-            ps.setString(7, requisition.getJustification());
+
+            ps.setInt(1, requisition.getUserId());
+            ps.setString(2, requisition.getName());
+            ps.setString(3, requisition.getSpecification());
+            ps.setInt(4, requisition.getQuantity());
+            ps.setInt(5, requisition.getUnitPrice());
+            ps.setInt(6, requisition.getTotalPrice());
+            ps.setString(7, requisition.getVendor());
+            ps.setString(8, requisition.getJustification());
             ps.executeUpdate();
         } catch (Exception e) {
             throw new ValidationException("Gagal menyimpan requisition");
@@ -37,21 +39,22 @@ public class RequisitionRepository {
     public void update(Requisition requisition) {
         String sql = """
                     UPDATE requisition
-                    SET name = ?, specification = ?, quantity = ?, unitPrice = ?, totalPrice = ?, vendor = ?, justification = ?
+                    SET userId = ? name = ?, specification = ?, quantity = ?, unitPrice = ?, totalPrice = ?, vendor = ?, justification = ?
                     WHERE id = ?
                 """;
 
         try (
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, requisition.getName());
-            ps.setString(2, requisition.getSpecification());
-            ps.setInt(3, requisition.getQuantity());
-            ps.setInt(4, requisition.getUnitPrice());
-            ps.setInt(5, requisition.getTotalPrice());
-            ps.setString(6, requisition.getVendor());
-            ps.setString(7, requisition.getJustification());
-            ps.setInt(8, requisition.getId());
+            ps.setInt(1, requisition.getUserId());
+            ps.setString(2, requisition.getName());
+            ps.setString(3, requisition.getSpecification());
+            ps.setInt(4, requisition.getQuantity());
+            ps.setInt(5, requisition.getUnitPrice());
+            ps.setInt(6, requisition.getTotalPrice());
+            ps.setString(7, requisition.getVendor());
+            ps.setString(8, requisition.getJustification());
+            ps.setInt(9, requisition.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             throw new ValidationException("Gagal memperbarui requisition");
@@ -82,6 +85,7 @@ public class RequisitionRepository {
             while (rs.next()) {
                 requisitionList.add(new Requisition(
                         rs.getInt("id"),
+                        rs.getInt("userId"),
                         rs.getString("name"),
                         rs.getString("specification"),
                         rs.getInt("quantity"),
@@ -95,7 +99,7 @@ public class RequisitionRepository {
     }
 
     public Requisition getRequisitionById(int id) throws Exception {
-        String sql = "SELECT id, name, specification, quantity, unitPrice, totalPrice, vendor, justification FROM barang WHERE id = ?";
+        String sql = "SELECT id, userId, name, specification, quantity, unitPrice, totalPrice, vendor, justification FROM requisition WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -106,6 +110,7 @@ public class RequisitionRepository {
                 if (rs.next()) {
                     return new Requisition(
                             rs.getInt("id"),
+                            rs.getInt("userId"),
                             rs.getString("name"),
                             rs.getString("specification"),
                             rs.getInt("quantity"),

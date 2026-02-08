@@ -55,10 +55,10 @@ public class SubBidangService {
         }
     }
 
-    public void deleteSubBidang(User user, int id) {
+    public void deleteSubBidangById(User user, int id) {
         authorize(user);
         try {
-            repository.deleteSubBidang(id);
+            repository.deleteSubBidangById(id);
         } catch (Exception e) {
             throw new ValidationException("Gagal menghapus subbidang");
         }

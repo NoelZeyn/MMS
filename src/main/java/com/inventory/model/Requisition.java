@@ -2,6 +2,7 @@ package main.java.com.inventory.model;
 
 public class Requisition {
     private int id;
+    private int userId;
     private String name;
     private String specification;
     private int quantity;
@@ -10,9 +11,11 @@ public class Requisition {
     private String vendor;
     private String justification;
 
-    public Requisition(int id, String name, String specification, int quantity, int unitPrice, int totalPrice,
+    public Requisition(int id, int userId, String name, String specification, int quantity, int unitPrice,
+            int totalPrice,
             String vendor, String justification) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.specification = specification;
         this.quantity = quantity;
@@ -22,9 +25,11 @@ public class Requisition {
         this.justification = justification;
     }
 
-    public Requisition(String name, String specification, int quantity, int unitPrice, int totalPrice, String vendor,
+    public Requisition(String name, int userId, String specification, int quantity, int unitPrice, int totalPrice,
+            String vendor,
             String justification) {
         // this.id = id;
+        this.userId = userId;
         this.name = name;
         this.specification = specification;
         this.quantity = quantity;
@@ -35,7 +40,15 @@ public class Requisition {
     }
 
     public int getId() {
-        return this.id;
+        return id;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public void setName(String name) {
@@ -43,7 +56,7 @@ public class Requisition {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setSpecification(String specification) {
@@ -51,7 +64,7 @@ public class Requisition {
     }
 
     public String getSpecification() {
-        return this.specification;
+        return specification;
     }
 
     public void setQuantity(int quantity) {
@@ -59,7 +72,7 @@ public class Requisition {
     }
 
     public int getQuantity() {
-        return this.quantity;
+        return quantity;
     }
 
     public void setUnitPrice(int unitPrice) {
@@ -67,7 +80,7 @@ public class Requisition {
     }
 
     public int getUnitPrice() {
-        return this.unitPrice;
+        return unitPrice;
     }
 
     public void setTotalPrice(int totalPrice) {
@@ -75,23 +88,23 @@ public class Requisition {
     }
 
     public int getTotalPrice() {
-        return this.totalPrice;
+        return totalPrice;
     }
 
-    public void setVendor(String vendor){
+    public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
-    public String getVendor(){
-        return this.vendor;
+    public String getVendor() {
+        return vendor;
     }
 
-        public void setJustification(String justification){
+    public void setJustification(String justification) {
         this.justification = justification;
     }
 
-    public String getJustification(){
-        return this.justification;
+    public String getJustification() {
+        return justification;
     }
 
 }

@@ -83,7 +83,7 @@ public class SubBidangRepository {
         return null;
     }
 
-    public void deleteSubBidang(int id) {
+    public void deleteSubBidangById(int id) {
         String sql = "DELETE FROM sub_bidang WHERE id = ?";
 
         try (
