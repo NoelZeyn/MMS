@@ -1,4 +1,4 @@
-package main.java.com.inventory.pages;
+package main.java.com.inventory.pages.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;

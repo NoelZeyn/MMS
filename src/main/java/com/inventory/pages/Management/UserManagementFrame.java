@@ -1,4 +1,4 @@
-package main.java.com.inventory.pages;
+package main.java.com.inventory.pages.Management;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
@@ -7,6 +7,7 @@ import main.java.com.inventory.controller.UserActivityController;
 import main.java.com.inventory.controller.UserManagementController;
 import main.java.com.inventory.model.SubBidang;
 import main.java.com.inventory.model.User;
+import main.java.com.inventory.pages.UI.UIConfig;
 import main.java.com.inventory.security.PasswordHasher;
 import main.java.com.inventory.service.SubBidangService;
 import main.java.com.inventory.service.UserActivityService;

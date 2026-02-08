@@ -1,10 +1,11 @@
 package main.java.com.inventory.app;
 
 import main.java.com.inventory.model.User;
-import main.java.com.inventory.pages.BarangMenuFrame;
-import main.java.com.inventory.pages.ReportMenuFrame;
-import main.java.com.inventory.pages.UserManagementFrame;
-import main.java.com.inventory.pages.UIConfig;
+import main.java.com.inventory.pages.Inventory.BarangMenuFrame;
+import main.java.com.inventory.pages.Management.UserManagementFrame;
+import main.java.com.inventory.pages.Report.ReportMenuFrame;
+import main.java.com.inventory.pages.UI.UIConfig;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;

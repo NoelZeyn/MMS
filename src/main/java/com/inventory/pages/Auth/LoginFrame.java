@@ -1,9 +1,11 @@
-package main.java.com.inventory.pages;
+package main.java.com.inventory.pages.Auth;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
 import main.java.com.inventory.app.MainMenuFrame;
 import main.java.com.inventory.model.User;
+import main.java.com.inventory.pages.UI.UIComponents;
+import main.java.com.inventory.pages.UI.UIConfig;
 import main.java.com.inventory.service.AuthService;
 
 import javax.swing.*;

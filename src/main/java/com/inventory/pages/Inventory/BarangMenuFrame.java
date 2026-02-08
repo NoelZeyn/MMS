@@ -1,10 +1,11 @@
-package main.java.com.inventory.pages;
+package main.java.com.inventory.pages.Inventory;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import main.java.com.inventory.controller.BarangController;
 import main.java.com.inventory.controller.UserActivityController;
 import main.java.com.inventory.model.Barang;
 import main.java.com.inventory.model.User;
+import main.java.com.inventory.pages.UI.UIConfig;
 import main.java.com.inventory.service.BarangService;
 import main.java.com.inventory.service.UserActivityService;
 
