@@ -1,9 +1,14 @@
 package main.java.com.inventory.pages;
 
 import com.formdev.flatlaf.FlatClientProperties;
+
+import main.java.com.inventory.controller.SubBidangController;
+import main.java.com.inventory.controller.UserActivityController;
 import main.java.com.inventory.controller.UserManagementController;
+import main.java.com.inventory.model.SubBidang;
 import main.java.com.inventory.model.User;
 import main.java.com.inventory.security.PasswordHasher;
+import main.java.com.inventory.service.SubBidangService;
 import main.java.com.inventory.service.UserActivityService;
 import main.java.com.inventory.service.UserManagementService;
 
@@ -17,7 +22,15 @@ import java.util.List;
 public class UserManagementFrame extends JPanel {
     private final User user;
     private final UserManagementController controller;
-    private final UserActivityService activityService = new UserActivityService();
+    private final UserActivityController activityController = new UserActivityController(new UserActivityService());
+    private final SubBidangController subBidangController = new SubBidangController(new SubBidangService());
+    private static final String[] ROLE_OPTIONS = {
+            "ADMIN", "MANAGER", "USER"
+    };
+
+    private static final String[] STATUS_OPTIONS = {
+            "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING"
+    };
 
     public UserManagementFrame(User user) {
         if (!user.isAdmin() && !user.isManager()) {
@@ -117,150 +130,225 @@ public class UserManagementFrame extends JPanel {
         return btn;
     }
 
-private void insertUser() {
-    JTextField nameF = new JTextField();
-    JPasswordField passwordF = new JPasswordField();
-    JTextField NIDF = new JTextField();
-    JComboBox<String> roleF = new JComboBox<>(new String[] { "ADMIN", "MANAGER", "USER" });
-    JComboBox<String> statusF = new JComboBox<>(new String[] { "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING" });
-
-    // Style inputs
-    nameF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
-    passwordF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
-    NIDF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
-    roleF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
-    statusF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
-
-    Object[] message = {
-            "User Name:", nameF,
-            "Password:", passwordF,
-            "NID:", NIDF,
-            "Role:", roleF,
-            "Status:", statusF,
-    };
-
-    int option = JOptionPane.showConfirmDialog(this, message, "Register New User", JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE);
-
-    if (option == JOptionPane.OK_OPTION) {
+    private void insertUser() {
+        JTextField nameF = new JTextField();
+        JPasswordField passwordF = new JPasswordField();
+        JTextField NIDF = new JTextField();
+        JComboBox<String> roleF = new JComboBox<>(new String[] { "ADMIN", "MANAGER", "USER" });
+        JComboBox<String> statusF = new JComboBox<>(new String[] { "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING" });
+        JComboBox<SubBidang> subBidangComboBox = new JComboBox<>();
         try {
-            // Ambil input
-            String name = nameF.getText().trim();
-            String password = new String(passwordF.getPassword()).trim();
-            String nid = NIDF.getText().trim();
-            String role = roleF.getSelectedItem().toString().toUpperCase();
-            String status = statusF.getSelectedItem().toString().toUpperCase();
+            List<SubBidang> listSub = subBidangController.getAllSubBidangs();
+            for (SubBidang sb : listSub) {
+                subBidangComboBox.addItem(sb);
+            }
+        } catch (Exception e) {
+            System.err.println("Gagal memuat subbidang: " + e.getMessage());
+        }
 
-            // --- VALIDASI INPUT ---
-            if (name.isEmpty())
-                throw new IllegalArgumentException("User name tidak boleh kosong");
-            if (password.isEmpty() || password.length() < 8)
-                throw new IllegalArgumentException("Password minimal 8 karakter");
-            if (nid.isEmpty())
-                throw new IllegalArgumentException("NID tidak boleh kosong");
-            if (!(role.equals("ADMIN") || role.equals("MANAGER") || role.equals("USER")))
-                throw new IllegalArgumentException("Role tidak valid");
-            if (!(status.equals("ACTIVE") || status.equals("INACTIVE") || status.equals("SUSPENDED")
-                    || status.equals("PENDING")))
-                throw new IllegalArgumentException("Status tidak valid");
+        nameF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
+        passwordF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
+        NIDF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
+        roleF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
+        statusF.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
+        subBidangComboBox.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
 
-            String hashedPassword = PasswordHasher.hash(password);
+        Object[] message = {
+                "User Name:", nameF,
+                "Password:", passwordF,
+                "NID:", NIDF,
+                "Role:", roleF,
+                "Status:", statusF,
+                "Sub Bidang:", subBidangComboBox,
+        };
 
-            User newUser = new User(name, nid, hashedPassword, role, status);
+        int option = JOptionPane.showConfirmDialog(this, message, "Register New User", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
-            controller.insertUser(user, newUser);
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                // Ambil input
+                String name = nameF.getText().trim();
+                String password = new String(passwordF.getPassword()).trim();
+                String nid = NIDF.getText().trim();
+                String role = roleF.getSelectedItem().toString().toUpperCase();
+                String status = statusF.getSelectedItem().toString().toUpperCase();
+                SubBidang selectedSub = (SubBidang) subBidangComboBox.getSelectedItem();
 
-            List<User> all = controller.getAllUsers(user);
-            int latestId = all.isEmpty() ? 0 : all.get(all.size() - 1).getId();
+                // --- VALIDASI INPUT ---
+                if (name.isEmpty())
+                    throw new IllegalArgumentException("User name tidak boleh kosong");
+                if (password.isEmpty() || password.length() < 8)
+                    throw new IllegalArgumentException("Password minimal 8 karakter");
+                if (nid.isEmpty())
+                    throw new IllegalArgumentException("NID tidak boleh kosong");
+                if (!(role.equals("ADMIN") || role.equals("MANAGER") || role.equals("USER")))
+                    throw new IllegalArgumentException("Role tidak valid");
+                if (!(status.equals("ACTIVE") || status.equals("INACTIVE") || status.equals("SUSPENDED")
+                        || status.equals("PENDING")))
+                    throw new IllegalArgumentException("Status tidak valid");
+                if (selectedSub == null) {
+                    throw new IllegalArgumentException("Sub Bidang wajib dipilih");
+                }
 
-            // Simpan log aktivitas
-            activityService.insertLogActivity(user, "CREATE", "USER", latestId,
-                    "New user added: " + newUser.getUsername() + " with role " + newUser.getRole());
+                String hashedPassword = PasswordHasher.hash(password);
+                selectedSub = (SubBidang) subBidangComboBox.getSelectedItem();
+                int selectedId = (selectedSub != null) ? selectedSub.getId() : 0;
+                User newUser = new User(name, nid, hashedPassword, role, status, selectedId);
 
-            JOptionPane.showMessageDialog(this, "Record successfully created.");
+                controller.insertUser(user, newUser);
 
-        } catch (IllegalArgumentException ex) {
-            showEnterpriseError("Validation Error: " + ex.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            showEnterpriseError("Data Error: " + ex.getMessage());
+                List<User> all = controller.getAllUsers(user);
+                int latestId = all.isEmpty() ? 0 : all.get(all.size() - 1).getId();
+
+                // Simpan log aktivitas
+                activityController.insertLogActivity(user, "CREATE", "USER", latestId,
+                        "New user added: " + newUser.getUsername() + " with role " + newUser.getRole());
+
+                JOptionPane.showMessageDialog(this, "Record successfully created.");
+
+            } catch (IllegalArgumentException ex) {
+                showEnterpriseError("Validation Error: " + ex.getMessage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showEnterpriseError("Data Error: " + ex.getMessage());
+            }
         }
     }
-}
 
     private void lihatUser() {
-        List<User> list = controller.getAllUsers(user);
-        String[] columns = { "ID", "USER NAME", "NID", "ROLE", "STATUS" };
 
-        // 1. Izinkan Cell Editable (Kecuali ID)
+        List<User> list = controller.getAllUsers(user);
+        String[] columns = { "ID", "USER NAME", "NID", "ROLE", "STATUS", "SUB BIDANG ID" };
+
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
+
             @Override
             public boolean isCellEditable(int r, int c) {
-                return c != 0; // ID (kolom 0) tidak boleh diubah
+                return c != 0 && c != 5; // ID & SubBidangID TIDAK editable
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2)
-                    return Integer.class; // Agar sorting & input angka benar
+                if (columnIndex == 0 || columnIndex == 5)
+                    return Integer.class;
                 return String.class;
             }
         };
 
-        for (User b : list) {
-            model.addRow(new Object[] { b.getId(), b.getUsername(), b.getNID(), b.getRole(), b.getStatus() });
+        for (User u : list) {
+            model.addRow(new Object[] {
+                    u.getId(),
+                    u.getUsername(),
+                    u.getNID(),
+                    u.getRole(),
+                    u.getStatus(),
+                    u.getSubBidangId()
+            });
         }
 
         JTable table = new JTable(model);
 
+        /*
+         * ===============================
+         * ROLE → COMBOBOX
+         * ===============================
+         */
+        JComboBox<String> roleCombo = new JComboBox<>(ROLE_OPTIONS);
+        table.getColumnModel()
+                .getColumn(3)
+                .setCellEditor(new DefaultCellEditor(roleCombo));
+        JComboBox<String> statusCombo = new JComboBox<>(STATUS_OPTIONS);
+        table.getColumnModel()
+                .getColumn(4)
+                .setCellEditor(new DefaultCellEditor(statusCombo));
+
+        /*
+         * ===============================
+         * LIVE UPDATE LISTENER
+         * ===============================
+         */
         table.getModel().addTableModelListener(e -> {
+
             int row = e.getFirstRow();
             int col = e.getColumn();
 
-            if (col != -1) {
-                try {
-                    int id = (int) model.getValueAt(row, 0);
+            if (row < 0 || col < 0)
+                return;
 
-                    User oldUser = controller.getUserById(id);
-                    String oldUsername = oldUser.getUsername();
-                    String oldNID = oldUser.getNID();
-                    String oldRole = oldUser.getRole();
-                    String oldStatus = oldUser.getStatus();
+            try {
+                int id = (int) model.getValueAt(row, 0);
+                int subBidangId = (int) model.getValueAt(row, 5);
 
-                    String newUsername = model.getValueAt(row, 1).toString();
-                    String newNID = model.getValueAt(row, 2).toString();
-                    String newRole = model.getValueAt(row, 3).toString();
-                    String newStatus = model.getValueAt(row, 4).toString();
+                User oldUser = controller.getUserById(id);
 
-                    User updatedUser = new User(id, newUsername, newNID, oldUser.getPasswordHash(), newRole, newStatus);
-                    controller.updateUser(user, updatedUser);
+                String newUsername = model.getValueAt(row, 1).toString();
+                String newNID = model.getValueAt(row, 2).toString();
+                String newRole = model.getValueAt(row, 3).toString();
+                String newStatus = model.getValueAt(row, 4).toString();
 
-                    StringBuilder changes = new StringBuilder();
-                    if (!oldUsername.equals(newUsername))
-                        changes.append("Username: ").append(oldUsername).append(" → ").append(newUsername).append("; ");
-                    if (!oldNID.equals(newNID))
-                        changes.append("NID: ").append(oldNID).append(" → ").append(newNID).append("; ");
-                    if (!oldRole.equals(newRole))
-                        changes.append("Role: ").append(oldRole).append(" → ").append(newRole).append("; ");
-                    if (!oldStatus.equals(newStatus))
-                        changes.append("Status: ").append(oldStatus).append(" → ").append(newStatus).append("; ");
-            
-                    activityService.insertLogActivity(user, "UPDATE", "USER", id,
-                            changes.toString().isEmpty() ? "No changes made via live edit."
-                                    : "Live edit updated fields: " + changes.toString());
+                User updatedUser = new User(
+                        id,
+                        newUsername,
+                        newNID,
+                        oldUser.getPasswordHash(),
+                        newRole,
+                        newStatus,
+                        subBidangId);
 
-                    System.out.println("Sync Success: Record ID " + id + " updated.");
-                } catch (Exception ex) {
-                    showEnterpriseError("Update failed: Invalid data format.");
-                    SwingUtilities.invokeLater(this::lihatUser);
-                }
+                controller.updateUser(user, updatedUser);
+
+                StringBuilder changes = new StringBuilder();
+
+                if (!oldUser.getUsername().equals(newUsername))
+                    changes.append("Username: ")
+                            .append(oldUser.getUsername())
+                            .append(" → ")
+                            .append(newUsername)
+                            .append("; ");
+
+                if (!oldUser.getNID().equals(newNID))
+                    changes.append("NID: ")
+                            .append(oldUser.getNID())
+                            .append(" → ")
+                            .append(newNID)
+                            .append("; ");
+
+                if (!oldUser.getRole().equals(newRole))
+                    changes.append("Role: ")
+                            .append(oldUser.getRole())
+                            .append(" → ")
+                            .append(newRole)
+                            .append("; ");
+
+                if (!oldUser.getStatus().equals(newStatus))
+                    changes.append("Status: ")
+                            .append(oldUser.getStatus())
+                            .append(" → ")
+                            .append(newStatus)
+                            .append("; ");
+
+                activityController.insertLogActivity(
+                        user,
+                        "UPDATE",
+                        "USER",
+                        id,
+                        changes.length() == 0
+                                ? "No changes made via live edit."
+                                : "Live edit updated fields: " + changes);
+
+                System.out.println("Sync Success: User ID " + id + " updated.");
+
+            } catch (Exception ex) {
+                showEnterpriseError("Update failed: Invalid data format.");
+                SwingUtilities.invokeLater(this::lihatUser);
             }
         });
 
         // 3. EXXCEL BRO
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines: true; " +
-                        "showVerticalLines: true; " + // Garis vertikal agar seperti Excel
+                        "showVerticalLines: true; " +
                         "rowHeight: 32; " +
                         "selectionBackground: #f1f5f9; " +
                         "selectionForeground: #0f172a; " +
@@ -272,7 +360,7 @@ private void insertUser() {
 
         // Pengaturan lebar kolom
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
         table.getColumnModel().getColumn(2).setPreferredWidth(80);
         table.getColumnModel().getColumn(3).setPreferredWidth(150);
 
@@ -318,11 +406,12 @@ private void insertUser() {
             infoPanel.add(new JLabel("NID: " + user.getNID().toUpperCase()));
             infoPanel.add(new JLabel("ROLE: " + user.getRole().toUpperCase()));
             infoPanel.add(new JLabel("STATUS: " + user.getStatus().toUpperCase()));
+            infoPanel.add(new JLabel("SUB BIDANG ID: " + user.getSubBidangId()));
             infoPanel.setBorder(BorderFactory.createCompoundBorder(
                     new MatteBorder(0, 4, 0, 0, UIConfig.PRIMARY),
                     BorderFactory.createEmptyBorder(5, 15, 5, 0)));
 
-            String[] options = {"MODIFY DATA", "DELETE", "CLOSE" };
+            String[] options = { "MODIFY DATA", "DELETE", "CLOSE" };
             int choice = JOptionPane.showOptionDialog(this,
                     infoPanel, "Record Administration - " + id,
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -333,31 +422,38 @@ private void insertUser() {
         }
     }
 
-    private void handleManageChoice(int choice, User user) {
+    private void handleManageChoice(int choice, User userToEdit) { // Ubah nama parameter agar tidak bentrok dengan
+                                                                   // 'user' session
         switch (choice) {
-            case 0 -> { 
-                String oldUsername = user.getUsername();
-                String oldNID = user.getNID();
-                String oldRole = user.getRole();
-                String oldStatus = user.getStatus();
+            case 0 -> {
+                // Simpan data lama untuk log aktivitas
+                String oldUsername = userToEdit.getUsername();
+                String oldNID = userToEdit.getNID();
+                String oldRole = userToEdit.getRole();
+                String oldStatus = userToEdit.getStatus();
 
+                // Input fields
                 JTextField u = new JTextField(oldUsername);
                 JTextField n = new JTextField(oldNID);
                 JComboBox<String> r = new JComboBox<>(new String[] { "ADMIN", "MANAGER", "USER" });
                 JComboBox<String> s = new JComboBox<>(new String[] { "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING" });
+
                 r.setSelectedItem(oldRole);
                 s.setSelectedItem(oldStatus);
 
+                // Styling
                 u.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
                 n.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
                 r.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
                 s.putClientProperty(FlatClientProperties.STYLE, "arc: 5");
 
+                // TAMPILAN: SUB BIDANG ID dibuat Read-Only (Hanya Label)
                 Object[] updateMsg = {
                         "USERNAME:", u,
                         "NID:", n,
                         "ROLE:", r,
-                        "STATUS:", s
+                        "STATUS:", s,
+                        "SUB BIDANG ID (Read-only):", new JLabel(String.valueOf(userToEdit.getSubBidangId()))
                 };
 
                 int option = JOptionPane.showConfirmDialog(this, updateMsg, "User Data Modification",
@@ -365,32 +461,28 @@ private void insertUser() {
 
                 if (option == JOptionPane.OK_OPTION) {
                     try {
-                        String newUsername = u.getText();
-                        String newNID = n.getText();
-                        String newRole = (String) r.getSelectedItem();
-                        String newStatus = (String) s.getSelectedItem();
+                        // Update data objek user (ID Sub Bidang tidak disentuh/diubah)
+                        userToEdit.setUsername(u.getText());
+                        userToEdit.setNID(n.getText());
+                        userToEdit.setRole((String) r.getSelectedItem());
+                        userToEdit.setStatus((String) s.getSelectedItem());
 
-                        user.setUsername(newUsername);
-                        user.setNID(newNID);
-                        user.setRole(newRole);
-                        user.setStatus(newStatus);
+                        controller.updateUser(user, userToEdit); // 'user' adalah admin yang sedang login, 'userToEdit'
+                                                                 // adalah objek yang diubah
 
-                        controller.updateUser(user, user);
-
+                        // Log Perubahan
                         StringBuilder changes = new StringBuilder();
-                        if (!oldUsername.equals(newUsername))
-                            changes.append("Username: ").append(oldUsername).append(" → ").append(newUsername).append("; ");
-                        if (!oldNID.equals(newNID))
-                            changes.append("NID: ").append(oldNID).append(" → ").append(newNID).append("; ");
-                        if (!oldRole.equals(newRole))
-                            changes.append("Role: ").append(oldRole).append(" → ").append(newRole).append("; ");
-                        if (!oldStatus.equals(newStatus))
-                            changes.append("Status: ").append(oldStatus).append(" → ").append(newStatus).append("; ");
+                        if (!oldUsername.equals(u.getText()))
+                            changes.append("Username; ");
+                        if (!oldNID.equals(n.getText()))
+                            changes.append("NID; ");
+                        if (!oldRole.equals(r.getSelectedItem()))
+                            changes.append("Role; ");
+                        if (!oldStatus.equals(s.getSelectedItem()))
+                            changes.append("Status; ");
 
-                        // Catat aktivitas user
-                        activityService.insertLogActivity(user, "UPDATE", "USER", user.getId(),
-                                changes.toString().isEmpty() ? "No changes made."
-                                        : "Updated fields: " + changes.toString());
+                        activityController.insertLogActivity(user, "UPDATE", "USER", userToEdit.getId(),
+                                changes.toString().isEmpty() ? "No changes made." : "Updated: " + changes.toString());
 
                         JOptionPane.showMessageDialog(this, "Master Record Synchronized.");
                     } catch (Exception e) {
@@ -398,18 +490,16 @@ private void insertUser() {
                     }
                 }
             }
-
-            case 2 -> { // DELETE (Warna Peringatan)
+            case 2 -> { // DELETE
                 int confirm = JOptionPane.showConfirmDialog(this,
-                        "Are you sure you want to PERMANENTLY DELETE\n" + user.getUsername().toUpperCase()
+                        "Are you sure you want to PERMANENTLY DELETE\n" + userToEdit.getUsername().toUpperCase()
                                 + "?\nThis action cannot be undone.",
                         "Security Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    controller.deleteUserById(user, choice);
-                    activityService.insertLogActivity(user, "DELETE", "USER", user.getId(),
-                            "User deleted: " + user.getUsername());
-                    JOptionPane.showMessageDialog(this, "Resource successfully purged from database.");
+                    controller.deleteUserById(user, userToEdit.getId());
+                    activityController.insertLogActivity(user, "DELETE", "USER", userToEdit.getId(), "User deleted.");
+                    JOptionPane.showMessageDialog(this, "Resource successfully purged.");
                 }
             }
         }

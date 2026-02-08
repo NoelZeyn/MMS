@@ -1,23 +1,30 @@
 package main.java.com.inventory.pages;
 
 import com.formdev.flatlaf.FlatClientProperties;
-
+import main.java.com.inventory.controller.SubBidangController;
+import main.java.com.inventory.model.SubBidang;
 import main.java.com.inventory.service.AuthService;
+import main.java.com.inventory.service.SubBidangService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class RegisterFrame extends JFrame {
-    // Dipisah agar data tidak tertimpa
-    private JTextField nidField; 
+
+    private JTextField nidField;
     private JTextField userField;
     private JPasswordField passField;
     private JComboBox<String> roleComboBox;
+    private JComboBox<SubBidang> subBidangComboBox;
     private JButton registerButton;
+
     private final AuthService authService;
+    private final SubBidangController subBidangController;
 
     public RegisterFrame() {
         this.authService = new AuthService();
+        this.subBidangController = new SubBidangController(new SubBidangService());
         setupFrame();
         initContent();
     }
@@ -35,7 +42,6 @@ public class RegisterFrame extends JFrame {
         contentPane.setBackground(UIConfig.BG_LIGHT);
         setContentPane(contentPane);
 
-        // Card Container
         JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(Color.WHITE);
         card.setPreferredSize(new Dimension(360, 500));
@@ -45,69 +51,98 @@ public class RegisterFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
 
-        // --- 0. Header ---
         JLabel title = new JLabel("Buat Akun Baru", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 22));
         gbc.gridy = 0;
         gbc.insets = new Insets(20, 30, 20, 30);
         card.add(title, gbc);
 
-        // --- 1. NID ---
         nidField = createStyledField("NID (Nomor Induk)");
         gbc.gridy = 1;
         gbc.insets = new Insets(5, 30, 5, 30);
         card.add(nidField, gbc);
 
-        // --- 2. Username ---
         userField = createStyledField("Username");
         gbc.gridy = 2;
         card.add(userField, gbc);
 
-        // --- 3. Password ---
         passField = createStyledPassField("Password");
         gbc.gridy = 3;
         card.add(passField, gbc);
 
-        // --- 4. Role ---
-        roleComboBox = new JComboBox<>(new String[]{"User", "Admin", "Manager"});
+        roleComboBox = new JComboBox<>(new String[]{"USER", "ADMIN", "MANAGER"});
         roleComboBox.setPreferredSize(new Dimension(0, 40));
         gbc.gridy = 4;
-        gbc.insets = new Insets(5, 30, 5, 30);
         card.add(roleComboBox, gbc);
 
-        // --- 5. Register Button ---
+        subBidangComboBox = new JComboBox<>();
+        loadSubBidang();
+        subBidangComboBox.setPreferredSize(new Dimension(0, 40));
+        gbc.gridy = 5;
+        card.add(subBidangComboBox, gbc);
+
         registerButton = new JButton("Daftar Sekarang");
         registerButton.setBackground(UIConfig.PRIMARY);
         registerButton.setForeground(Color.WHITE);
         registerButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
         registerButton.setPreferredSize(new Dimension(0, 45));
-        registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        registerButton.putClientProperty(FlatClientProperties.STYLE, "borderWidth: 0; focusWidth: 0");
-        
-        gbc.gridy = 5;
+        registerButton.putClientProperty(
+                FlatClientProperties.STYLE,
+                "borderWidth: 0; focusWidth: 0"
+        );
+
+        gbc.gridy = 6;
         gbc.insets = new Insets(25, 30, 10, 30);
         card.add(registerButton, gbc);
 
-        // --- 6. Footer (Pake UIComponents) ---
-        JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        footer.setOpaque(false);
-        footer.add(new JLabel("Sudah punya akun?"));
-
-        JButton loginLinkBtn = UIComponents.createLinkButton("Login Sekarang");
-        footer.add(loginLinkBtn);
-
-        gbc.gridy = 6;
-        gbc.insets = new Insets(10, 30, 20, 30);
-        card.add(footer, gbc);
-
         contentPane.add(card);
 
-        // --- Logic ---
         registerButton.addActionListener(e -> handleRegister());
-        loginLinkBtn.addActionListener(e -> {
+    }
+
+    private void loadSubBidang() {
+        try {
+            List<SubBidang> list = subBidangController.getAllSubBidangs();
+            for (SubBidang sb : list) {
+                subBidangComboBox.addItem(sb);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Gagal memuat Sub Bidang",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleRegister() {
+        String nid = nidField.getText().trim();
+        String user = userField.getText().trim();
+        String pass = new String(passField.getPassword());
+        String role = (String) roleComboBox.getSelectedItem();
+        SubBidang subBidang = (SubBidang) subBidangComboBox.getSelectedItem();
+
+        if (nid.isEmpty() || user.isEmpty() || pass.isEmpty() || subBidang == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Semua field wajib diisi!",
+                    "Validasi",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int subBidangId = subBidang.getId(); // INT, sesuai DB
+
+        try {
+            authService.register(nid, user, pass, role, subBidangId);
+            JOptionPane.showMessageDialog(this,
+                    "Akun berhasil dibuat");
             new LoginFrame().setVisible(true);
-            this.dispose();
-        });
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Registrasi gagal",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private JTextField createStyledField(String hint) {
@@ -123,27 +158,5 @@ public class RegisterFrame extends JFrame {
         f.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, hint);
         f.putClientProperty(FlatClientProperties.STYLE, "showRevealButton: true");
         return f;
-    }
-
-
-    private void handleRegister() {
-        String nid = nidField.getText();
-        String user = userField.getText();
-        String pass = new String(passField.getPassword());
-        String role = (String) roleComboBox.getSelectedItem();
-
-        if (nid.isEmpty() || user.isEmpty() || pass.isEmpty() || role == null) {
-            JOptionPane.showMessageDialog(this, "Harap lengkapi semua data!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        try {
-            authService.register(nid, user, pass, role); 
-            JOptionPane.showMessageDialog(this, "Akun " + user + " berhasil didaftarkan!");
-            new LoginFrame().setVisible(true);
-            this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal daftar: " + e.getMessage());
-        }
     }
 }

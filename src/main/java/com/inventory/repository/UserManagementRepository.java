@@ -24,7 +24,9 @@ public class UserManagementRepository {
                         rs.getString("NID"),
                         rs.getString("password_hash"),
                         rs.getString("role"),
-                        rs.getString("status"));
+                        rs.getString("status"),
+                        rs.getInt("subBidangId")
+                    );
                 users.add(user);
             }
             return users;
@@ -48,7 +50,8 @@ public class UserManagementRepository {
                         rs.getString("NID"),
                         rs.getString("password_hash"),
                         rs.getString("role"),
-                        rs.getString("status"));
+                        rs.getString("status"),
+                        rs.getInt("subBidangId"));
                 return user;
             }
         } catch (Exception e) {
@@ -59,8 +62,8 @@ public class UserManagementRepository {
 
     public void insertUser(User user) {
         String sql = """
-                    INSERT INTO users (username, NID, password_hash, role, status)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO users (username, NID, password_hash, role, status, subBidangId)
+                    VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try (
@@ -71,6 +74,7 @@ public class UserManagementRepository {
             ps.setString(3, user.getPasswordHash());
             ps.setString(4, user.getRole());
             ps.setString(5, user.getStatus());
+            ps.setInt(6, user.getSubBidangId());
             ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Gagal memasukkan pengguna baru", e);
@@ -80,7 +84,7 @@ public class UserManagementRepository {
     public void updateUser(User user) {
         String sql = """
                     UPDATE users
-                    SET username = ?, NID = ?, password_hash = ?, role = ?, status = ?
+                    SET username = ?, NID = ?, password_hash = ?, role = ?, status = ?, subBidangId = ?
                     WHERE id = ?
                 """;
 
@@ -92,7 +96,8 @@ public class UserManagementRepository {
             ps.setString(3, user.getPasswordHash());
             ps.setString(4, user.getRole());
             ps.setString(5, user.getStatus());
-            ps.setInt(6, user.getId());
+            ps.setInt(6, user.getSubBidangId());
+            ps.setInt(7, user.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Gagal memperbarui pengguna", e);

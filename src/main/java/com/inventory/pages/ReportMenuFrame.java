@@ -121,7 +121,7 @@ public class ReportMenuFrame extends JPanel {
         };
 
         for (Barang b : list) {
-            model.addRow(new Object[] { b.getId(), b.getNama(), b.getStok(), b.getLokasi().toUpperCase() });
+            model.addRow(new Object[] { b.getId(), b.getName(), b.getStok(), b.getLokasi().toUpperCase() });
         }
 
         JTable table = new JTable(model);

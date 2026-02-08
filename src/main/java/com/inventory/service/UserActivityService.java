@@ -3,6 +3,7 @@ package main.java.com.inventory.service;
 import java.util.List;
 
 import main.java.com.inventory.exception.AuthException;
+import main.java.com.inventory.exception.ValidationException;
 import main.java.com.inventory.model.User;
 import main.java.com.inventory.model.UserActivity;
 import main.java.com.inventory.repository.UserActivityRepository;
@@ -22,7 +23,7 @@ public class UserActivityService {
         try {
             return repository.getAllUserActivities();
         } catch (Exception e) {
-            throw new RuntimeException("Gagal mengambil semua log aktivitas pengguna", e);
+            throw new ValidationException("Gagal mengambil semua log aktivitas pengguna");
         }
     }
 
@@ -48,7 +49,7 @@ public class UserActivityService {
                     description, timestamp);
             repository.updateLogActivity(activityLog);
         } catch (Exception e) {
-            throw new RuntimeException("Gagal memperbarui log aktivitas pengguna", e);
+            throw new ValidationException("Gagal memperbarui log aktivitas pengguna");
         }
     }
 
@@ -57,7 +58,7 @@ public class UserActivityService {
         try {
             repository.getLogsByUserId(targetUserId);
         } catch (Exception e) {
-            throw new RuntimeException("Gagal mengambil log aktivitas pengguna", e);
+            throw new ValidationException("Gagal mengambil log aktivitas pengguna");
         }
     }
 }

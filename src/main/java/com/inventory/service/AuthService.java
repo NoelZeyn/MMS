@@ -31,12 +31,12 @@ public class AuthService {
         return user;
     }
 
-    public void register(String NID, String username, String rawPassword, String role) throws Exception {
+    public void register(String NID, String username, String rawPassword, String role, int subBidangId) throws Exception {
         if (userRepository.findByUsername(username) != null) {
             throw new Exception("Username sudah digunakan!");
         }
         String hashedPassword = PasswordHasher.hash(rawPassword);
-        User newUser = new User(0, username, NID, hashedPassword, role.toUpperCase(), "PENDING");
+        User newUser = new User(0, username, NID, hashedPassword, role.toUpperCase(), "PENDING", subBidangId);
         userRepository.register(newUser);
     }
 }

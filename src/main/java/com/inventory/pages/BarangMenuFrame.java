@@ -2,6 +2,7 @@ package main.java.com.inventory.pages;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import main.java.com.inventory.controller.BarangController;
+import main.java.com.inventory.controller.UserActivityController;
 import main.java.com.inventory.model.Barang;
 import main.java.com.inventory.model.User;
 import main.java.com.inventory.service.BarangService;
@@ -17,7 +18,7 @@ import java.util.List;
 public class BarangMenuFrame extends JPanel {
     private final User user;
     private final BarangController controller;
-    private final UserActivityService activityService = new UserActivityService();
+    private final UserActivityController activityController = new UserActivityController(new UserActivityService());
 
     public BarangMenuFrame(User user) {
         this.user = user;
@@ -145,8 +146,8 @@ public class BarangMenuFrame extends JPanel {
                 int latestId = all.isEmpty() ? 0 : all.get(all.size() - 1).getId();
 
                 // 3. Simpan Log dengan ID yang valid
-                activityService.insertLogActivity(user, "CREATE", "BARANG", latestId,
-                        "New item added: " + newBarang.getNama());
+                activityController.insertLogActivity(user, "CREATE", "BARANG", latestId,
+                        "New item added: " + newBarang.getName());
 
                 JOptionPane.showMessageDialog(this, "Record successfully created.");
             } catch (Exception ex) {
@@ -176,7 +177,7 @@ public class BarangMenuFrame extends JPanel {
         };
 
         for (Barang b : list) {
-            model.addRow(new Object[] { b.getId(), b.getNama(), b.getStok(), b.getLokasi().toUpperCase() });
+            model.addRow(new Object[] { b.getId(), b.getName(), b.getStok(), b.getLokasi().toUpperCase() });
         }
 
         JTable table = new JTable(model);
@@ -190,7 +191,7 @@ public class BarangMenuFrame extends JPanel {
                     int id = (int) model.getValueAt(row, 0);
 
                     Barang oldBarang = controller.getBarangById(id);
-                    String oldNama = oldBarang.getNama();
+                    String oldNama = oldBarang.getName();
                     int oldStok = oldBarang.getStok();
                     String oldLokasi = oldBarang.getLokasi();
 
@@ -208,7 +209,7 @@ public class BarangMenuFrame extends JPanel {
                         changes.append("Stok: ").append(oldStok).append(" → ").append(newStok).append("; ");
                     if (!oldLokasi.equals(newLokasi))
                         changes.append("Lokasi: ").append(oldLokasi).append(" → ").append(newLokasi).append("; ");
-                    activityService.insertLogActivity(user, "UPDATE", "BARANG", id,
+                    activityController.insertLogActivity(user, "UPDATE", "BARANG", id,
                             changes.toString().isEmpty() ? "No changes made via live edit."
                                     : "Live edit updated fields: " + changes.toString());
 
@@ -278,7 +279,7 @@ public class BarangMenuFrame extends JPanel {
 
             // Tampilan Detail yang lebih rapi
             JPanel infoPanel = new JPanel(new GridLayout(0, 1, 2, 2));
-            infoPanel.add(new JLabel("ITEM IDENTITY: " + barang.getNama().toUpperCase()));
+            infoPanel.add(new JLabel("ITEM IDENTITY: " + barang.getName().toUpperCase()));
             infoPanel.add(new JLabel("CURRENT STOCK: " + barang.getStok() + " UNITS"));
             infoPanel.add(new JLabel("WAREHOUSE: " + barang.getLokasi().toUpperCase()));
             infoPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -301,15 +302,15 @@ public class BarangMenuFrame extends JPanel {
             case 0 -> { // ADJUST STOCK (UI Terintegrasi)
                 JTextField qField = new JTextField();
                 qField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Amount to subtract...");
-                Object[] msg = { "SUBTRACT QUANTITY FROM " + barang.getNama().toUpperCase(), qField };
+                Object[] msg = { "SUBTRACT QUANTITY FROM " + barang.getName().toUpperCase(), qField };
 
                 if (JOptionPane.showConfirmDialog(this, msg, "Stock Adjustment", JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
                     try {
                         int amount = Integer.parseInt(qField.getText());
                         controller.kurangiStok(barang.getId(), amount);
-                        activityService.insertLogActivity(user, "UPDATE", "BARANG", barang.getId(),
-                                "Stock adjusted (-) by " + amount + " units for item: " + barang.getNama());
+                        activityController.insertLogActivity(user, "UPDATE", "BARANG", barang.getId(),
+                                "Stock adjusted (-) by " + amount + " units for item: " + barang.getName());
                         JOptionPane.showMessageDialog(this, "Inventory Ledger Updated Successfully.");
                     } catch (Exception e) {
                         showEnterpriseError("Adjustment failed. Check input values.");
@@ -318,7 +319,7 @@ public class BarangMenuFrame extends JPanel {
             }
             case 1 -> { // MODIFY DATA (Form Terstruktur)
                 // Simpan nilai lama untuk log
-                String oldNama = barang.getNama();
+                String oldNama = barang.getName();
                 int oldStok = barang.getStok();
                 String oldLokasi = barang.getLokasi();
 
@@ -358,7 +359,7 @@ public class BarangMenuFrame extends JPanel {
                             changes.append("Lokasi: ").append(oldLokasi).append(" → ").append(newLokasi).append("; ");
 
                         // Catat aktivitas user
-                        activityService.insertLogActivity(user, "UPDATE", "BARANG", barang.getId(),
+                        activityController.insertLogActivity(user, "UPDATE", "BARANG", barang.getId(),
                                 changes.toString().isEmpty() ? "No changes made."
                                         : "Updated fields: " + changes.toString());
 
@@ -371,14 +372,14 @@ public class BarangMenuFrame extends JPanel {
 
             case 2 -> { // DELETE (Warna Peringatan)
                 int confirm = JOptionPane.showConfirmDialog(this,
-                        "Are you sure you want to PERMANENTLY DELETE\n" + barang.getNama().toUpperCase()
+                        "Are you sure you want to PERMANENTLY DELETE\n" + barang.getName().toUpperCase()
                                 + "?\nThis action cannot be undone.",
                         "Security Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     controller.deleteBarangById(barang.getId());
-                    activityService.insertLogActivity(user, "DELETE", "BARANG", barang.getId(),
-                            "Item deleted: " + barang.getNama());
+                    activityController.insertLogActivity(user, "DELETE", "BARANG", barang.getId(),
+                            "Item deleted: " + barang.getName());
                     JOptionPane.showMessageDialog(this, "Resource successfully purged from database.");
                 }
             }

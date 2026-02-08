@@ -26,7 +26,7 @@ public class Barang {
     }
     
 
-    public String getNama() {
+    public String getName() {
         return nama;
     }
 

@@ -25,14 +25,15 @@ public class UserRepository {
                         rs.getString("NID"),
                         rs.getString("password_hash"),
                         rs.getString("role"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        rs.getInt("subBidangId")
                 );
             }
             return null;
         }
     }
     public void register(User user) throws Exception {
-        String sql = "INSERT INTO users (username, NID, password_hash, role, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, NID, password_hash, role, status, subBidangId) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -42,6 +43,7 @@ public class UserRepository {
             ps.setString(3, user.getPasswordHash());
             ps.setString(4, user.getRole());
             ps.setString(5, user.getStatus());
+            ps.setInt(6, user.getSubBidangId());
 
             ps.executeUpdate();
         }

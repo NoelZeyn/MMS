@@ -1,5 +1,4 @@
 package main.java.com.inventory.model;
-
 public class User {
 
     private int id;
@@ -8,23 +7,26 @@ public class User {
     private String role;
     private String status;
     private String NID;
+    private int subBidangId;
 
-    public User(int id, String username, String NID, String passwordHash, String role, String status) {
+    public User(int id, String username, String NID, String passwordHash, String role, String status, int subBidangId) {
         this.id = id;
         this.username = username;
         this.NID = NID;
         this.passwordHash = passwordHash;
         this.role = role;
         this.status = status;
+        this.subBidangId = subBidangId;
     }
 
-        public User(String username, String NID, String passwordHash, String role, String status) {
+        public User(String username, String NID, String passwordHash, String role, String status, int subBidangId) {
         // this.id = id;
         this.username = username;
         this.NID = NID;
         this.passwordHash = passwordHash;
         this.role = role;
         this.status = status;
+        this.subBidangId = subBidangId;
     }
 
     public int getId() {
@@ -69,6 +71,13 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public void setSubBidangId(int subBidangId) {
+        this.subBidangId = subBidangId;
+    }
+
+    public int getSubBidangId() {
+        return this.subBidangId;
     }
 
     public boolean isAdmin() {

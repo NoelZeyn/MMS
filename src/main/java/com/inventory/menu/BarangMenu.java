@@ -72,7 +72,7 @@ public class BarangMenu {
             System.out.println("=== Daftar Semua Barang ===");
             controller.getAllBarang().forEach(b -> {
                 System.out.println("ID    : " + b.getId());
-                System.out.println("Nama  : " + b.getNama());
+                System.out.println("Nama  : " + b.getName());
                 System.out.println("Stok  : " + b.getStok());
                 System.out.println("Lokasi: " + b.getLokasi());
                 System.out.println("-----------------------");
@@ -92,7 +92,7 @@ public class BarangMenu {
             while (true) {
                 System.out.println("=== Manajemen Detail Barang ===");
                 System.out.println("ID    : " + barang.getId());
-                System.out.println("Nama  : " + barang.getNama());
+                System.out.println("Nama  : " + barang.getName());
                 System.out.println("Stok  : " + barang.getStok());
                 System.out.println("Lokasi: " + barang.getLokasi());
                 System.out.println("1. Kurangi Stok");

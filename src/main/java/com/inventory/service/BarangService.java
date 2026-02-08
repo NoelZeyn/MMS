@@ -19,7 +19,7 @@ public class BarangService {
     }
 
     private void validate(Barang barang) {
-        if (barang.getNama() == null || barang.getNama().isEmpty()) {
+        if (barang.getName() == null || barang.getName().isEmpty()) {
             throw new ValidationException("Nama barang wajib diisi");
         }
         if (barang.getStok() < 0) {

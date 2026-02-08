@@ -19,7 +19,7 @@ public class BarangRepository {
         try (
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, barang.getNama());
+            ps.setString(1, barang.getName());
             ps.setInt(2, barang.getStok());
             ps.setString(3, barang.getLokasi());
             ps.executeUpdate();
@@ -38,7 +38,7 @@ public class BarangRepository {
         try (
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, barang.getNama());
+            ps.setString(1, barang.getName());
             ps.setInt(2, barang.getStok());
             ps.setString(3, barang.getLokasi());
             ps.setInt(4, barang.getId());
