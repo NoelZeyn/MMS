@@ -72,7 +72,7 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 3;
         card.add(passField, gbc);
 
-        roleComboBox = new JComboBox<>(new String[] { "USER", "ADMIN", "MANAGER" });
+        roleComboBox = new JComboBox<>(new String[] { "USER", "ADMIN", "MANAGER", "ASMAN", "SUPERADMIN", "BUDGETER"});
         roleComboBox.setPreferredSize(new Dimension(0, 40));
         gbc.gridy = 4;
         card.add(roleComboBox, gbc);

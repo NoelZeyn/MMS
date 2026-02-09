@@ -1,7 +1,6 @@
 package main.java.com.inventory.controller;
 
 import java.util.List;
-
 import main.java.com.inventory.model.Requisition;
 import main.java.com.inventory.model.User;
 import main.java.com.inventory.service.RequisitionService;
@@ -18,19 +17,51 @@ public class RequisitionController {
         service.insertRequisition(user, requisition);
     }
 
-    public List<Requisition> getAllRequisitions(User user) {
+    public List<Requisition> getAllRequisitions(User user) throws Exception {
         return service.getAllRequisitions(user);
     }
 
-    public Requisition getRequisitionById(User user, int id) {
+    public Requisition getRequisitionById(User user, int id) throws Exception {
         return service.getRequisitionById(user, id);
     }
 
-    public void updateRequistion(User user, Requisition requisition) {
+    public void updateRequisition(User user, Requisition requisition) throws Exception { // Fixed typo
         service.updateRequisition(user, requisition);
     }
 
     public void deleteRequisitionById(User user, int id) {
         service.deleteRequisitionById(user, id);
+    }
+
+    public void approveAsman(User user, int id) throws Exception {
+        service.approveAsman(user, id);
+    }
+
+    public void rejectAsman(User user, int id) throws Exception {
+        service.rejectAsman(user, id);
+    }
+
+    public void approveManager(User user, int id) throws Exception {
+        service.approveManager(user, id);
+    }
+
+    public void rejectManager(User user, int id) throws Exception {
+        service.rejectManager(user, id);
+    }
+
+    public void approveBudget(User user, int id) throws Exception {
+        service.approveBudget(user, id);
+    }
+
+    public void rejectBudget(User user, int id) throws Exception {
+        service.rejectBudget(user, id);
+    }
+
+    public void approveAdmin(User user, int id) throws Exception {
+        service.approveAdmin(user, id);
+    }
+
+    public void rejectAdmin(User user, int id) throws Exception {
+        service.rejectAdmin(user, id);
     }
 }

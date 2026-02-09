@@ -95,4 +95,12 @@ public class User {
     public boolean isUser() {
         return "USER".equals(role);
     }
+
+    public boolean isBudget() {
+        throw new UnsupportedOperationException("Unimplemented method 'isBudget'");
+    }
+
+    public boolean isAsman() {
+        throw new UnsupportedOperationException("Unimplemented method 'isAsman'");
+    }
 }

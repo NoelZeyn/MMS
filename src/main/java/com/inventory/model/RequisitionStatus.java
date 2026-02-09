@@ -1,0 +1,22 @@
+package main.java.com.inventory.model;
+
+public enum RequisitionStatus {
+    DRAFT,
+    SUBMITTED,
+
+    PENDING_ASMAN,
+    APPROVED_ASMAN,
+    REJECTED_ASMAN,
+
+    PENDING_MANAGER,
+    APPROVED_MANAGER,
+    REJECTED_MANAGER,
+
+    PENDING_BUDGET,
+    APPROVED_BUDGET,
+    REJECTED_BUDGET,
+
+    PENDING_ADMIN,
+    APPROVED_ADMIN,
+    REJECTED_ADMIN
+}

@@ -29,7 +29,7 @@ public class UserManagementFrame extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    private static final String[] ROLE_OPTIONS = { "ADMIN", "MANAGER", "USER" };
+    private static final String[] ROLE_OPTIONS = { "USER", "ADMIN", "MANAGER", "ASMAN", "SUPERADMIN", "BUDGETER" };
     private static final String[] STATUS_OPTIONS = { "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING" };
 
     public UserManagementFrame(User user) {
