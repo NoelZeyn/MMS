@@ -1,13 +1,13 @@
-package main.java.com.inventory.repository;
+package com.inventory.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-// INI PAKAI USER
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.util.DatabaseUtil;
+
+import com.inventory.model.User;
+import com.inventory.util.DatabaseUtil;
 
 public class UserManagementRepository {
     public List<User> getAllUsers() {

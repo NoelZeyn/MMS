@@ -1,11 +1,11 @@
-package main.java.com.inventory.service;
+package com.inventory.service;
 
 
-import main.java.com.inventory.exception.ValidationException;
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.model.Peminjaman;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.repository.PeminjamanRepository;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.Barang;
+import com.inventory.model.Peminjaman;
+import com.inventory.model.User;
+import com.inventory.repository.PeminjamanRepository;
 
 public class PeminjamanService {
     private PeminjamanRepository repository;

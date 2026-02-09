@@ -1,12 +1,12 @@
-package main.java.com.inventory.repository;
+package com.inventory.repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import main.java.com.inventory.exception.ValidationException;
-import main.java.com.inventory.model.Requisition;
-import main.java.com.inventory.model.RequisitionStatus;
-import main.java.com.inventory.util.DatabaseUtil;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.Requisition;
+import com.inventory.model.RequisitionStatus;
+import com.inventory.util.DatabaseUtil;
 
 public class RequisitionRepository {
 

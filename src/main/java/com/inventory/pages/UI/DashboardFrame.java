@@ -1,10 +1,10 @@
-package main.java.com.inventory.pages.UI;
+package com.inventory.pages.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.controller.UserActivityController;
-import main.java.com.inventory.service.UserActivityService;
-import main.java.com.inventory.model.UserActivity;
+import com.inventory.model.User;
+import com.inventory.controller.UserActivityController;
+import com.inventory.service.UserActivityService;
+import com.inventory.model.UserActivity;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

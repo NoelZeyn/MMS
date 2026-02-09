@@ -1,4 +1,4 @@
-package main.java.com.inventory.repository;
+package com.inventory.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.inventory.model.SubBidang;
-import main.java.com.inventory.util.DatabaseUtil;
+import com.inventory.model.SubBidang;
+import com.inventory.util.DatabaseUtil;
 
 public class SubBidangRepository {
 

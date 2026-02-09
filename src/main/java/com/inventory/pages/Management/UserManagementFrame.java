@@ -1,16 +1,16 @@
-package main.java.com.inventory.pages.Management;
+package com.inventory.pages.Management;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import main.java.com.inventory.controller.SubBidangController;
-import main.java.com.inventory.controller.UserActivityController;
-import main.java.com.inventory.controller.UserManagementController;
-import main.java.com.inventory.model.SubBidang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.pages.UI.UIConfig;
-import main.java.com.inventory.security.PasswordHasher;
-import main.java.com.inventory.service.SubBidangService;
-import main.java.com.inventory.service.UserActivityService;
-import main.java.com.inventory.service.UserManagementService;
+import com.inventory.controller.SubBidangController;
+import com.inventory.controller.UserActivityController;
+import com.inventory.controller.UserManagementController;
+import com.inventory.model.SubBidang;
+import com.inventory.model.User;
+import com.inventory.pages.UI.UIConfig;
+import com.inventory.security.PasswordHasher;
+import com.inventory.service.SubBidangService;
+import com.inventory.service.UserActivityService;
+import com.inventory.service.UserManagementService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

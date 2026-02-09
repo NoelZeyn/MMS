@@ -1,4 +1,4 @@
-package main.java.com.inventory.dto;
+package com.inventory.dto;
 
 public class BarangDTO {
     public String nama;

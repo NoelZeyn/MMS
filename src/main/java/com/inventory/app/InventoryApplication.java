@@ -1,10 +1,10 @@
-// package main.java.com.inventory.app;
+// package com.inventory.app;
 
-// import main.java.com.inventory.controller.BarangController;
-// import main.java.com.inventory.controller.PeminjamanController;
-// import main.java.com.inventory.model.*;
-// import main.java.com.inventory.repository.*;
-// import main.java.com.inventory.service.*;
+// import com.inventory.controller.BarangController;
+// import com.inventory.controller.PeminjamanController;
+// import com.inventory.model.*;
+// import com.inventory.repository.*;
+// import com.inventory.service.*;
 
 // public class InventoryApplication {
 

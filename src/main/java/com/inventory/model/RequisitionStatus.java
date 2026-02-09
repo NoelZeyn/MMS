@@ -1,4 +1,4 @@
-package main.java.com.inventory.model;
+package com.inventory.model;
 
 public enum RequisitionStatus {
     DRAFT,

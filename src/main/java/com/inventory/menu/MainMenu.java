@@ -1,6 +1,6 @@
-package main.java.com.inventory.menu;
+package com.inventory.menu;
 
-import main.java.com.inventory.model.User;
+import com.inventory.model.User;
 
 import java.util.Scanner;
 

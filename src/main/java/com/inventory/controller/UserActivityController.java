@@ -1,10 +1,10 @@
-package main.java.com.inventory.controller;
+package com.inventory.controller;
 
 import java.util.List;
 
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.model.UserActivity;
-import main.java.com.inventory.service.UserActivityService;
+import com.inventory.model.User;
+import com.inventory.model.UserActivity;
+import com.inventory.service.UserActivityService;
 
 public class UserActivityController {
     private final UserActivityService service;

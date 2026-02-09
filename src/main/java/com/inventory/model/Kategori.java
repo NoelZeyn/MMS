@@ -1,4 +1,4 @@
-package main.java.com.inventory.model;
+package com.inventory.model;
 public class Kategori {
     private int id;
     private String name;

@@ -1,14 +1,14 @@
-package main.java.com.inventory.pages.Report;
+package com.inventory.pages.Report;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import main.java.com.inventory.controller.BarangController;
-import main.java.com.inventory.controller.UserActivityController;
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.model.UserActivity;
-import main.java.com.inventory.pages.UI.UIConfig;
-import main.java.com.inventory.service.BarangService;
-import main.java.com.inventory.service.UserActivityService;
+import com.inventory.controller.BarangController;
+import com.inventory.controller.UserActivityController;
+import com.inventory.model.Barang;
+import com.inventory.model.User;
+import com.inventory.model.UserActivity;
+import com.inventory.pages.UI.UIConfig;
+import com.inventory.service.BarangService;
+import com.inventory.service.UserActivityService;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;

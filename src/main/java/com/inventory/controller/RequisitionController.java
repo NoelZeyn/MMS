@@ -1,9 +1,10 @@
-package main.java.com.inventory.controller;
+package com.inventory.controller;
 
 import java.util.List;
-import main.java.com.inventory.model.Requisition;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.service.RequisitionService;
+
+import com.inventory.model.Requisition;
+import com.inventory.model.User;
+import com.inventory.service.RequisitionService;
 
 public class RequisitionController {
 

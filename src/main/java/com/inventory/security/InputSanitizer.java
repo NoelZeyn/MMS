@@ -1,4 +1,4 @@
-package main.java.com.inventory.security;
+package com.inventory.security;
 
 public class InputSanitizer {
 

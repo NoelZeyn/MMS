@@ -1,12 +1,12 @@
-package main.java.com.inventory.service;
+package com.inventory.service;
 
 import java.util.List;
 
-import main.java.com.inventory.exception.AuthException;
-import main.java.com.inventory.exception.ValidationException;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.model.UserActivity;
-import main.java.com.inventory.repository.UserActivityRepository;
+import com.inventory.exception.AuthException;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.User;
+import com.inventory.model.UserActivity;
+import com.inventory.repository.UserActivityRepository;
 
 public class UserActivityService {
     private final UserActivityRepository repository = new UserActivityRepository();

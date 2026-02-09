@@ -1,10 +1,10 @@
-package main.java.com.inventory.service;
+package com.inventory.service;
 
-import main.java.com.inventory.exception.AuthException;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.repository.UserRepository;
-import main.java.com.inventory.security.PasswordHasher;
-import main.java.com.inventory.security.StatusChecker;
+import com.inventory.exception.AuthException;
+import com.inventory.model.User;
+import com.inventory.repository.UserRepository;
+import com.inventory.security.PasswordHasher;
+import com.inventory.security.StatusChecker;
 
 public class AuthService {
 

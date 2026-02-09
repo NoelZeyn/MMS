@@ -1,14 +1,14 @@
-package main.java.com.inventory.pages.Requisition;
+package com.inventory.pages.Requisition;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import main.java.com.inventory.controller.RequisitionController;
-import main.java.com.inventory.controller.UserActivityController;
-import main.java.com.inventory.model.Requisition;
-import main.java.com.inventory.model.RequisitionStatus;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.pages.UI.UIConfig;
-import main.java.com.inventory.service.RequisitionService;
-import main.java.com.inventory.service.UserActivityService;
+import com.inventory.controller.RequisitionController;
+import com.inventory.controller.UserActivityController;
+import com.inventory.model.Requisition;
+import com.inventory.model.RequisitionStatus;
+import com.inventory.model.User;
+import com.inventory.pages.UI.UIConfig;
+import com.inventory.service.RequisitionService;
+import com.inventory.service.UserActivityService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

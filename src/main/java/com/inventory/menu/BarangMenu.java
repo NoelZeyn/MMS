@@ -1,10 +1,10 @@
-package main.java.com.inventory.menu;
+package com.inventory.menu;
 
-import main.java.com.inventory.controller.BarangController;
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.security.InputSanitizer;
-import main.java.com.inventory.service.BarangService;
+import com.inventory.controller.BarangController;
+import com.inventory.model.Barang;
+import com.inventory.model.User;
+import com.inventory.security.InputSanitizer;
+import com.inventory.service.BarangService;
 
 import java.util.Scanner;
 
