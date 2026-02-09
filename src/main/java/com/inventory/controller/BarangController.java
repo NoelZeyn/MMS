@@ -1,6 +1,5 @@
 package com.inventory.controller;
 
-
 import java.util.List;
 
 import com.inventory.model.Barang;
@@ -37,5 +36,9 @@ public class BarangController {
 
     public void kurangiStok(int id, int jumlah) {
         service.kurangiStok(id, jumlah);
+    }
+
+    public List<Barang> searchBarang(String keyword) {
+        return service.searchBarang(keyword);
     }
 }

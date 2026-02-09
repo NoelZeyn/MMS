@@ -8,7 +8,6 @@ public class Barang {
     private String lokasi;
 
     public Barang(String name, int stok, String lokasi) {
-        // this.id = id;
         this.name = name;
         this.stok = stok;
         this.lokasi = lokasi;

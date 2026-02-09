@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -68,7 +67,6 @@ public class UserManagementFrame extends JPanel {
         setLayout(new BorderLayout());
         setBackground(UIConfig.BG_LIGHT);
 
-        // --- 1. HEADER & TOOLBAR ---
         JPanel toolbar = new JPanel(new BorderLayout());
         toolbar.setBackground(Color.WHITE);
         toolbar.setPreferredSize(new Dimension(0, 75));
@@ -101,27 +99,22 @@ public class UserManagementFrame extends JPanel {
         toolbar.add(titlePanel, BorderLayout.WEST);
         toolbar.add(btnPanel, BorderLayout.EAST);
 
-        // --- 2. TABLE AREA ---
-        String[] columns = { "ID", "USER NAME", "NID", "ROLE", "STATUS", "SUB-BIDANG ID" };
+        // Kolom terakhir diubah menjadi String karena sekarang berisi NAMA, bukan ID
+        String[] columns = { "ID", "USER NAME", "NID", "ROLE", "STATUS", "SUB-BIDANG" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int r, int c) {
-                return c != 0 && c != 5; // ID dan SubBidang ID read-only
+                return c != 0 && c != 5; 
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                return (columnIndex == 0 || columnIndex == 5) ? Integer.class : String.class;
+                if (columnIndex == 0) return Integer.class;
+                return String.class; 
             }
         };
 
         table = new JTable(tableModel);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         setupTableStyle();
 
         JScrollPane scroll = new JScrollPane(table);
@@ -138,7 +131,6 @@ public class UserManagementFrame extends JPanel {
         add(scroll, BorderLayout.CENTER);
         add(hint, BorderLayout.SOUTH);
 
-        // --- 3. LISTENERS ---
         btnAdd.addActionListener(e -> insertUser());
         btnManage.addActionListener(e -> manageDetailUser());
         btnRefresh.addActionListener(e -> loadUserData());
@@ -147,38 +139,42 @@ public class UserManagementFrame extends JPanel {
 
     private void setupTableStyle() {
         table.putClientProperty(FlatClientProperties.STYLE,
-                "rowHeight: 35; " +
-                        "showHorizontalLines: true; " +
-                        "intercellSpacing: 0,1; " +
-                        "selectionBackground: #E2E8F0; " + // Warna biru keabuan muda saat dipilih
-                        "selectionForeground: #0F172A; " + // Warna teks tetap gelap saat dipilih (PENTING)
-                        "selectionInactiveBackground: #F1F5F9;" // Warna saat tabel kehilangan fokus
-        );
+                "rowHeight: 40; " +
+                "showHorizontalLines: true; " +
+                "selectionBackground: #e2e8f0; " +
+                "selectionForeground: #0f172a; " +
+                "intercellSpacing: 0,0;");
 
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        DefaultTableCellRenderer customRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
                     boolean isSelected, boolean hasFocus, int row, int column) {
-
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBorder(new EmptyBorder(0, 15, 0, 15));
 
                 if (isSelected) {
-                    c.setBackground(new Color(226, 232, 240)); // Latar saat diklik (abu muda)
-                    c.setForeground(Color.BLACK); // Teks saat diklik (hitam)
+                    setBackground(new Color(226, 232, 240));
+                    setForeground(new Color(15, 23, 42));
                 } else {
-                    c.setBackground(Color.WHITE);
-                    c.setForeground(UIConfig.TEXT_DARK);
+                    setBackground(Color.WHITE);
+                    setForeground(new Color(51, 65, 85));
                 }
-                return c;
+
+                if (column == 0 || column == 3 || column == 4) {
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                } else {
+                    setHorizontalAlignment(SwingConstants.LEFT);
+                }
+                return this;
             }
-        });
+        };
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+        }
 
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox<>(ROLE_OPTIONS)));
         table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox<>(STATUS_OPTIONS)));
-
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
     }
 
@@ -187,7 +183,7 @@ public class UserManagementFrame extends JPanel {
         btn.setPreferredSize(new Dimension(125, 38));
         btn.setBackground(bg);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        btn.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 11));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.putClientProperty(FlatClientProperties.STYLE, "arc: 8; borderWidth: 0; focusWidth: 0;");
         return btn;
@@ -199,7 +195,12 @@ public class UserManagementFrame extends JPanel {
             List<User> list = controller.getAllUsers(currentUser);
             for (User u : list) {
                 tableModel.addRow(new Object[] {
-                        u.getId(), u.getUsername(), u.getNID(), u.getRole(), u.getStatus(), u.getSubBidangId()
+                        u.getId(), 
+                        u.getUsername(), 
+                        u.getNID(), 
+                        u.getRole(), 
+                        u.getStatus(), 
+                        u.getSubBidangName() // Memanggil field String hasil Join
                 });
             }
         } catch (Exception e) {
@@ -210,8 +211,7 @@ public class UserManagementFrame extends JPanel {
     private void handleLiveUpdate(javax.swing.event.TableModelEvent e) {
         int row = e.getFirstRow();
         int col = e.getColumn();
-        if (row < 0 || col < 0)
-            return;
+        if (row < 0 || col < 0) return;
 
         try {
             int id = (int) tableModel.getValueAt(row, 0);
@@ -226,8 +226,7 @@ public class UserManagementFrame extends JPanel {
                     oldData.getSubBidangId());
             controller.updateUser(currentUser, updated);
 
-            activityController.insertLogActivity(currentUser, "UPDATE", "USER", id,
-                    "Live edit modified record: " + newName);
+            activityController.insertLogActivity(currentUser, "UPDATE", "USER", id, "Modified record: " + newName);
         } catch (Exception ex) {
             showEnterpriseError("Update Rejected: " + ex.getMessage());
             SwingUtilities.invokeLater(this::loadUserData);
@@ -241,20 +240,13 @@ public class UserManagementFrame extends JPanel {
         JComboBox<String> roleF = new JComboBox<>(ROLE_OPTIONS);
         JComboBox<SubBidang> subF = new JComboBox<>();
 
-        // --- WORKFLOW ENTER ---
         nameF.addActionListener(e -> passF.requestFocus());
         passF.addActionListener(e -> nidF.requestFocus());
         nidF.addActionListener(e -> roleF.requestFocus());
-
-        // Saat di JComboBox, tekan Enter untuk pindah ke ComboBox berikutnya atau
-        // Simpan
         roleF.addActionListener(e -> subF.requestFocus());
-
-        // Di field terakhir (subF), tekan Enter langsung Simpan
         subF.addActionListener(e -> {
             JButton ok = findOKButton((Container) SwingUtilities.getWindowAncestor(subF));
-            if (ok != null)
-                ok.doClick();
+            if (ok != null) ok.doClick();
         });
 
         try {
@@ -265,14 +257,13 @@ public class UserManagementFrame extends JPanel {
 
         Object[] fields = { "Username:", nameF, "Password:", passF, "NID:", nidF, "Role:", roleF, "Department:", subF };
 
-        int opt = JOptionPane.showConfirmDialog(this, fields, "Fast Entry - Register User",
+        int opt = JOptionPane.showConfirmDialog(this, fields, "Register User",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (opt == JOptionPane.OK_OPTION) {
             try {
                 String pass = new String(passF.getPassword());
-                if (pass.length() < 8)
-                    throw new Exception("Password min 8 chars.");
+                if (pass.length() < 8) throw new Exception("Password min 8 chars.");
 
                 SubBidang sb = (SubBidang) subF.getSelectedItem();
                 User newUser = new User(nameF.getText(), nidF.getText(), PasswordHasher.hash(pass),
@@ -280,7 +271,6 @@ public class UserManagementFrame extends JPanel {
 
                 controller.insertUser(currentUser, newUser);
                 loadUserData();
-                // Looping otomatis agar bisa input banyak user sekaligus
                 SwingUtilities.invokeLater(this::insertUser);
             } catch (Exception ex) {
                 showEnterpriseError("Registration Failed: " + ex.getMessage());
@@ -289,15 +279,12 @@ public class UserManagementFrame extends JPanel {
     }
 
     private JButton findOKButton(Container container) {
-        if (container == null)
-            return null;
+        if (container == null) return null;
         for (Component c : container.getComponents()) {
-            if (c instanceof JButton && ((JButton) c).getText().equalsIgnoreCase("OK")) {
-                return (JButton) c;
-            } else if (c instanceof Container container1) {
-                JButton b = findOKButton(container1);
-                if (b != null)
-                    return b;
+            if (c instanceof JButton && ((JButton) c).getText().equalsIgnoreCase("OK")) return (JButton) c;
+            else if (c instanceof Container c1) {
+                JButton b = findOKButton(c1);
+                if (b != null) return b;
             }
         }
         return null;
@@ -305,8 +292,7 @@ public class UserManagementFrame extends JPanel {
 
     private void manageDetailUser() {
         String input = JOptionPane.showInputDialog(this, "Enter Target User ID:");
-        if (input == null || input.isEmpty())
-            return;
+        if (input == null || input.isEmpty()) return;
 
         try {
             int id = Integer.parseInt(input);
@@ -318,20 +304,20 @@ public class UserManagementFrame extends JPanel {
 
             JPanel info = new JPanel(new GridLayout(0, 1));
             info.add(new JLabel("Target: " + target.getUsername()));
-            info.add(new JLabel("Current Role: " + target.getRole()));
+            info.add(new JLabel("Role: " + target.getRole()));
 
             String[] opts = { "DELETE ACCOUNT", "RESET PASSWORD", "CANCEL" };
             int choice = JOptionPane.showOptionDialog(this, info, "Account Management - ID " + id,
                     JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opts, opts[2]);
 
-            if (choice == 0) { // Delete
+            if (choice == 0) {
                 int confirm = JOptionPane.showConfirmDialog(this, "Permanently delete " + target.getUsername() + "?",
                         "Security", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
                     controller.deleteUserById(currentUser, id);
                     loadUserData();
                 }
-            } else if (choice == 1) { // Reset Password logic
+            } else if (choice == 1) {
                 String newPass = JOptionPane.showInputDialog("Enter New Password:");
                 if (newPass != null && newPass.length() >= 8) {
                     target.setPasswordHash(PasswordHasher.hash(newPass));
@@ -339,7 +325,7 @@ public class UserManagementFrame extends JPanel {
                     JOptionPane.showMessageDialog(this, "Password updated.");
                 }
             }
-        } catch (HeadlessException | NumberFormatException e) {
+        } catch (Exception e) {
             showEnterpriseError("Invalid input ID.");
         }
     }

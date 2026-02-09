@@ -1,7 +1,6 @@
 package com.inventory.service;
-// INI PAKAI USER
-import java.util.List;
 
+import java.util.List;
 import com.inventory.exception.AuthException;
 import com.inventory.exception.ValidationException;
 import com.inventory.model.User;
@@ -11,70 +10,56 @@ public class UserManagementService {
     private final UserManagementRepository repository = new UserManagementRepository();
 
     private void authorize(User user) {
-        if (!user.isAdmin() && !user.isManager()) {
-            throw new AuthException("Akses ditolak: role tidak memiliki izin");
+        if (user == null || (!user.isAdmin() && !user.isManager())) {
+            throw new AuthException("Akses ditolak: Anda tidak memiliki izin administratif.");
         }
     }
 
-    public List<User> getAllUsers(User user) {
-        //! User harus admin atau manager INGAT WOI
-        authorize(user);
-        try {
-            return repository.getAllUsers();
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal mengambil semua pengguna", e);
-        }
+    public List<User> getAllUsers(User currentUser) {
+        authorize(currentUser);
+        return repository.getAllUsers();
     }
 
     public User getUserById(int id) {
-        try {
-            User user = repository.getUserById(id);
-            if (user == null) {
-                throw new ValidationException("User tidak ditemukan");
-            }
-            return user;
-        } catch (ValidationException e) {
-            throw new ValidationException("Error saat mengambil user");
+        User user = repository.getUserById(id);
+        if (user == null) {
+            throw new ValidationException("User dengan ID " + id + " tidak ditemukan.");
         }
+        return user;
     }
 
-    public void insertUser(User user, User newUser) {
-        authorize(user);
-        try {
-            repository.insertUser(newUser);
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal memasukkan pengguna baru", e);
+    public void insertUser(User currentUser, User newUser) {
+        authorize(currentUser);
+        
+        // Validasi simpel
+        if (newUser.getUsername() == null || newUser.getUsername().isBlank()) {
+            throw new ValidationException("Username tidak boleh kosong.");
         }
+        
+        repository.insertUser(newUser);
     }
 
-    public void updateUser(User user, User updatedUser) {
-        authorize(user);
-        try {
-            repository.updateUser(updatedUser);
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal memperbarui pengguna", e);
-        }
+    public void updateUser(User currentUser, User updatedUser) {
+        authorize(currentUser);
+        
+        // Pastikan user ada sebelum update
+        getUserById(updatedUser.getId());
+        
+        repository.updateUser(updatedUser);
     }
 
-    public void deleteUserById(User user, int id) {
-        authorize(user);
-        try {
-            repository.deleteUserById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal menghapus pengguna berdasarkan ID", e);
+    public void deleteUserById(User currentUser, int id) {
+        authorize(currentUser);
+        
+        if (currentUser.getId() == id) {
+            throw new ValidationException("Anda tidak bisa menghapus akun Anda sendiri.");
         }
+        
+        repository.deleteUserById(id);
     }
 
-    public void suspendUserById(User user, int id) {
-        //! User harus admin atau manager INGAT WOI
-        authorize(user);
-        try {
-            repository.suspendUserById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal memblokir pengguna berdasarkan ID", e);
-        }
+    public void suspendUserById(User currentUser, int id) {
+        authorize(currentUser);
+        repository.suspendUserById(id);
     }
-
-
-    
 }

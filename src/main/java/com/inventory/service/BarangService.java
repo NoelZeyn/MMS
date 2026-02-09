@@ -103,4 +103,22 @@ public class BarangService {
             throw new ValidationException("Error saat mengambil barang");
         }
     }
+
+    // Tambahkan di BarangService.java
+
+    public List<Barang> searchBarang(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllBarang();
+        }
+
+        if (keyword.length() > 50) {
+            throw new ValidationException("Kata kunci terlalu panjang");
+        }
+
+        try {
+            return repository.searchBarang(keyword.trim());
+        } catch (Exception e) {
+            throw new ValidationException("Terjadi kesalahan saat mencari data");
+        }
+    }
 }

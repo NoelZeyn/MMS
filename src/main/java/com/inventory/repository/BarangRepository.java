@@ -71,7 +71,8 @@ public class BarangRepository {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (Exception e) {
-            throw new RuntimeException("Gagal mengurangi stok barang, barang dengan ID " + id + " tidak ditemukan atau stok tidak mencukupi", e);
+            throw new RuntimeException("Gagal mengurangi stok barang, barang dengan ID " + id
+                    + " tidak ditemukan atau stok tidak mencukupi", e);
         }
     }
 
@@ -126,5 +127,35 @@ public class BarangRepository {
             }
         }
         return null;
+    }
+
+    // Tambahkan di BarangRepository.java
+
+    public List<Barang> searchBarang(String keyword) {
+        // Mencari berdasarkan nama atau lokasi
+        String sql = "SELECT id, name, stok, lokasi FROM barang WHERE name LIKE ? OR lokasi LIKE ?";
+        List<Barang> barangList = new ArrayList<>();
+
+        try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Bungkus keyword dengan % untuk pencarian partial
+            String formattedKeyword = "%" + keyword + "%";
+            ps.setString(1, formattedKeyword);
+            ps.setString(2, formattedKeyword);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    barangList.add(new Barang(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("stok"),
+                            rs.getString("lokasi")));
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Gagal melakukan pencarian barang", e);
+        }
+        return barangList;
     }
 }
