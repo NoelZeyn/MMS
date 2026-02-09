@@ -1,11 +1,11 @@
-package main.java.com.inventory.repository;
+package com.inventory.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.util.DatabaseUtil;
+import com.inventory.model.Barang;
+import com.inventory.util.DatabaseUtil;
 import java.sql.ResultSet;
 
 public class BarangRepository {

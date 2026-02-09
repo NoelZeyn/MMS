@@ -1,11 +1,11 @@
-package main.java.com.inventory.service;
+package com.inventory.service;
 // INI PAKAI USER
 import java.util.List;
 
-import main.java.com.inventory.exception.AuthException;
-import main.java.com.inventory.exception.ValidationException;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.repository.UserManagementRepository;
+import com.inventory.exception.AuthException;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.User;
+import com.inventory.repository.UserManagementRepository;
 
 public class UserManagementService {
     private final UserManagementRepository repository = new UserManagementRepository();
@@ -33,7 +33,7 @@ public class UserManagementService {
                 throw new ValidationException("User tidak ditemukan");
             }
             return user;
-        } catch (Exception e) {
+        } catch (ValidationException e) {
             throw new ValidationException("Error saat mengambil user");
         }
     }

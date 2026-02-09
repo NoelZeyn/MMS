@@ -15,10 +15,10 @@ JRE paths:	C:\Program Files\Java\jdk-21;C:\Program Files\Common Files\Oracle\Jav
 Check launcher:	C:\Program Files\Java\jdk-21\bin\javaw.exe (OK)
 Check javac:	C:\Program Files\Java\jdk-21\bin\javac.exe (OK)
 Version string: 1.021.000_008 / 64-Bit (OK)
-Main class:	main.java.com.inventory.app.InventoryApp
+Main class:	com.inventory.app.InventoryApp
 Add classpath:	lib\flatlaf-demo-3.7.jar
 Add classpath:	lib\mysql-connector-j-9.6.0.jar
 Launcher:	C:\Program Files\Java\jdk-21\bin\javaw.exe
-Launcher args:	-classpath "D:\JavaPro\MMS\InventoryApp.exe;lib\flatlaf-demo-3.7.jar;lib\mysql-connector-j-9.6.0.jar" main.java.com.inventory.app.InventoryApp
+Launcher args:	-classpath "D:\JavaPro\MMS\InventoryApp.exe;lib\flatlaf-demo-3.7.jar;lib\mysql-connector-j-9.6.0.jar" com.inventory.app.InventoryApp
 Args length:	142/32768 chars
 Exit code:	0

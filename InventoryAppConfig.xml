@@ -15,7 +15,7 @@
   <manifest></manifest>
   <icon></icon>
   <classPath>
-    <mainClass>main.java.com.inventory.app.InventoryApp</mainClass>
+    <mainClass>com.inventory.app.InventoryApp</mainClass>
     <cp>lib\flatlaf-demo-3.7.jar</cp>
     <cp>lib\mysql-connector-j-9.6.0.jar</cp>
   </classPath>

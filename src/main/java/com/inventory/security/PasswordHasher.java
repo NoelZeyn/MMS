@@ -1,4 +1,4 @@
-package main.java.com.inventory.security;
+package com.inventory.security;
 import java.security.MessageDigest;
 
 public class PasswordHasher {

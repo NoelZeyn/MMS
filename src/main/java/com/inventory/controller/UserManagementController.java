@@ -1,8 +1,8 @@
-package main.java.com.inventory.controller;
+package com.inventory.controller;
 import java.util.List;
 
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.service.UserManagementService;
+import com.inventory.model.User;
+import com.inventory.service.UserManagementService;
 
 public class UserManagementController {
 

@@ -1,9 +1,10 @@
-package main.java.com.inventory.repository;
+package com.inventory.repository;
 
 
-import main.java.com.inventory.model.Peminjaman;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.inventory.model.Peminjaman;
 
 public class PeminjamanRepository {
     private List<Peminjaman> dataPeminjaman = new ArrayList<>();

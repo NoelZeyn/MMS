@@ -1,18 +1,34 @@
-package main.java.com.inventory.app;
+package com.inventory.app;
 
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.pages.UI.DashboardFrame; // Import Dashboard sungguhan
-import main.java.com.inventory.pages.Inventory.BarangMenuFrame;
-import main.java.com.inventory.pages.Requisition.RequisitionFrame;
-import main.java.com.inventory.pages.Management.UserManagementFrame;
-import main.java.com.inventory.pages.Report.ReportMenuFrame;
-import main.java.com.inventory.pages.UI.UIConfig;
+import java.awt.BorderLayout;
+import java.awt.CardLayout; // Import Dashboard sungguhan
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import java.awt.*;
+
+import com.inventory.model.User;
+import com.inventory.pages.Inventory.BarangMenuFrame;
+import com.inventory.pages.Management.UserManagementFrame;
+import com.inventory.pages.Report.ReportMenuFrame;
+import com.inventory.pages.Requisition.RequisitionFrame;
+import com.inventory.pages.UI.DashboardFrame;
+import com.inventory.pages.UI.UIConfig;
 
 public class MainMenuFrame extends JFrame {
     private final User user;

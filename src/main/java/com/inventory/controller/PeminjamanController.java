@@ -1,9 +1,9 @@
-package main.java.com.inventory.controller;
+package com.inventory.controller;
 
 
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.service.PeminjamanService;
+import com.inventory.model.Barang;
+import com.inventory.model.User;
+import com.inventory.service.PeminjamanService;
 
 public class PeminjamanController {
     private PeminjamanService service;

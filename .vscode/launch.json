@@ -8,7 +8,14 @@
             "type": "java",
             "name": "InventoryApp",
             "request": "launch",
-            "mainClass": "main.java.com.inventory.app.InventoryApp",
+            "mainClass": "com.inventory.app.InventoryApp",
+            "projectName": "inventory"
+        },
+        {
+            "type": "java",
+            "name": "InventoryApp",
+            "request": "launch",
+            "mainClass": "com.inventory.app.InventoryApp",
             "projectName": "MMS_10b0cb96"
         },
         {

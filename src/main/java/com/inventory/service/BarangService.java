@@ -1,12 +1,12 @@
-package main.java.com.inventory.service;
-
-import main.java.com.inventory.model.Barang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.repository.BarangRepository;
-import main.java.com.inventory.exception.AuthException;
-import main.java.com.inventory.exception.ValidationException;
+package com.inventory.service;
 
 import java.util.List;
+
+import com.inventory.exception.AuthException;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.Barang;
+import com.inventory.model.User;
+import com.inventory.repository.BarangRepository;
 
 public class BarangService {
 

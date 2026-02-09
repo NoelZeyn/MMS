@@ -1,8 +1,10 @@
-package main.java.com.inventory.pages.UI;
+package com.inventory.pages.UI;
+
+import java.awt.Color;
+
+import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import javax.swing.*;
-import java.awt.*;
 
 public class UIConfig {
     // Palet Warna Modern (Indigo & Slate) CHATGPT

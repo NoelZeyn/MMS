@@ -1,10 +1,10 @@
-package main.java.com.inventory.controller;
-
-import main.java.com.inventory.model.SubBidang;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.service.SubBidangService;
+package com.inventory.controller;
 
 import java.util.List;
+
+import com.inventory.model.SubBidang;
+import com.inventory.model.User;
+import com.inventory.service.SubBidangService;
 
 public class SubBidangController {
     private final SubBidangService service;

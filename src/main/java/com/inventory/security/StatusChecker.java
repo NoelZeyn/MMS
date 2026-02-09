@@ -1,7 +1,7 @@
-package main.java.com.inventory.security;
+package com.inventory.security;
 
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.repository.UserRepository;
+import com.inventory.model.User;
+import com.inventory.repository.UserRepository;
 
 public class StatusChecker {
 

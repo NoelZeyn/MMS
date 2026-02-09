@@ -1,12 +1,12 @@
-package main.java.com.inventory.service;
+package com.inventory.service;
 
 import java.util.List;
 
-import main.java.com.inventory.exception.AuthException;
-import main.java.com.inventory.exception.ValidationException;
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.model.SubBidang;
-import main.java.com.inventory.repository.SubBidangRepository;
+import com.inventory.exception.AuthException;
+import com.inventory.exception.ValidationException;
+import com.inventory.model.SubBidang;
+import com.inventory.model.User;
+import com.inventory.repository.SubBidangRepository;
 
 public class SubBidangService {
     private final SubBidangRepository repository = new SubBidangRepository();
@@ -31,8 +31,7 @@ public class SubBidangService {
             SubBidang subBidang = new SubBidang(name, bidangId);
             repository.insertSubBidang(subBidang);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("CRITICAL: Gagal mencatat");
+            System.err.println("CRITICAL: Gagal mencatat ");
         }
     }
 

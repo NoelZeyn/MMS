@@ -1,11 +1,11 @@
-package main.java.com.inventory.repository;
-
-import main.java.com.inventory.model.User;
-import main.java.com.inventory.util.DatabaseUtil;
+package com.inventory.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import com.inventory.model.User;
+import com.inventory.util.DatabaseUtil;
 
 public class UserRepository {
 

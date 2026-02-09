@@ -1,12 +1,12 @@
-package main.java.com.inventory.pages.Auth;
+package com.inventory.pages.Auth;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import main.java.com.inventory.controller.SubBidangController;
-import main.java.com.inventory.model.SubBidang;
-import main.java.com.inventory.pages.UI.UIComponents;
-import main.java.com.inventory.pages.UI.UIConfig;
-import main.java.com.inventory.service.AuthService;
-import main.java.com.inventory.service.SubBidangService;
+import com.inventory.controller.SubBidangController;
+import com.inventory.model.SubBidang;
+import com.inventory.pages.UI.UIComponents;
+import com.inventory.pages.UI.UIConfig;
+import com.inventory.service.AuthService;
+import com.inventory.service.SubBidangService;
 
 import javax.swing.*;
 import java.awt.*;

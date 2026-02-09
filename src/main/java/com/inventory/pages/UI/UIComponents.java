@@ -1,4 +1,4 @@
-package main.java.com.inventory.pages.UI;
+package com.inventory.pages.UI;
 
 
 import javax.swing.*;

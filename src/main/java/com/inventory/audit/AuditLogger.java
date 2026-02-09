@@ -1,4 +1,4 @@
-package main.java.com.inventory.audit;
+package com.inventory.audit;
 
 import java.time.LocalDateTime;
 
