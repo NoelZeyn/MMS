@@ -50,26 +50,25 @@ public class BarangMenuFrame extends JPanel {
         this.user = user;
         this.controller = new BarangController(new BarangService());
         initContent();
-        loadData(); // Langsung load data saat aplikasi dibuka
+        loadData(); 
     }
 
     private void initContent() {
         setLayout(new BorderLayout());
         setBackground(UIConfig.BG_LIGHT);
 
-        // --- 1. HEADER & TOOLBAR (LOKASI BUTTON) ---
+        // --- 1. HEADER SECTION ---
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(Color.WHITE);
-        headerPanel.setPreferredSize(new Dimension(0, 70));
+        headerPanel.setPreferredSize(new Dimension(0, 75));
         headerPanel.setBorder(new MatteBorder(0, 0, 1, 0, new Color(226, 232, 240)));
         headerPanel.setBorder(BorderFactory.createCompoundBorder(
-                headerPanel.getBorder(), new EmptyBorder(10, 20, 10, 20)));
+                headerPanel.getBorder(), new EmptyBorder(10, 25, 10, 25)));
 
-        // Title Section
         JPanel titleSection = new JPanel(new GridLayout(2, 1));
         titleSection.setOpaque(false);
         JLabel title = new JLabel("Stock Management");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         title.setForeground(UIConfig.TEXT_DARK);
         JLabel subTitle = new JLabel("Monitor and execute administrative inventory operations");
         subTitle.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -77,8 +76,7 @@ public class BarangMenuFrame extends JPanel {
         titleSection.add(title);
         titleSection.add(subTitle);
 
-        // Action Buttons (Kanan Atas)
-        JPanel actionSection = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+        JPanel actionSection = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 8));
         actionSection.setOpaque(false);
 
         JButton btnAdd = createActionButton("ADD RECORD", UIConfig.PRIMARY);
@@ -92,7 +90,7 @@ public class BarangMenuFrame extends JPanel {
         headerPanel.add(titleSection, BorderLayout.WEST);
         headerPanel.add(actionSection, BorderLayout.EAST);
 
-        // --- 2. TABLE AREA (LANGSUNG TAMPIL) ---
+        // --- 2. TABLE AREA ---
         String[] columns = { "ID", "ITEM DESCRIPTION", "STOK QTY", "LOCATION" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -102,26 +100,58 @@ public class BarangMenuFrame extends JPanel {
         };
 
         table = new JTable(tableModel);
-        // Style Tabel
+        
+        // Style Tabel yang diperbaiki kontrasnya
         table.putClientProperty(FlatClientProperties.STYLE,
-                "rowHeight: 35; showHorizontalLines: true; selectionBackground: #f1f5f9; intercellSpacing: 0,1;");
+                "rowHeight: 40; " +
+                "showHorizontalLines: true; " +
+                "gridColor: #f1f5f9; " +
+                "selectionBackground: #e2e8f0; " + // Slate 200 (lebih terlihat)
+                "selectionForeground: #0f172a; " + // Teks Biru Gelap (kontras tinggi)
+                "intercellSpacing: 0,0;");
 
-        // Render tengah untuk ID dan Stok
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        // Custom Renderer untuk menangani pewarnaan saat di-klik
+        DefaultTableCellRenderer customRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBorder(new EmptyBorder(0, 15, 0, 15));
+
+                if (isSelected) {
+                    setBackground(new Color(226, 232, 240));
+                    setForeground(new Color(15, 23, 42));
+                } else {
+                    setBackground(Color.WHITE);
+                    setForeground(new Color(51, 65, 85));
+                }
+
+                // Alignment berdasarkan kolom
+                if (column == 0 || column == 2) {
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                } else {
+                    setHorizontalAlignment(SwingConstants.LEFT);
+                }
+                
+                return this;
+            }
+        };
+
+        // Terapkan ke semua kolom
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+        }
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(new EmptyBorder(20, 20, 10, 20));
+        scrollPane.setBorder(new EmptyBorder(25, 25, 10, 25));
         scrollPane.setBackground(UIConfig.BG_LIGHT);
         scrollPane.getViewport().setBackground(Color.WHITE);
 
-        // Hint di bawah tabel
         JLabel hint = new JLabel(" 💡 Double-click any cell to live-edit data.");
         hint.setFont(new Font("Segoe UI", Font.ITALIC, 11));
         hint.setForeground(new Color(148, 163, 184));
-        hint.setBorder(new EmptyBorder(0, 25, 10, 0));
+        hint.setBorder(new EmptyBorder(0, 30, 15, 0));
 
         add(headerPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -131,19 +161,17 @@ public class BarangMenuFrame extends JPanel {
         btnAdd.addActionListener(e -> insertBarang());
         btnManage.addActionListener(e -> manageDetailBarang());
         btnRefresh.addActionListener(e -> loadData());
-
-        // Listener untuk Live Edit
-        tableModel.addTableModelListener(e -> handleLiveEdit(e));
+        tableModel.addTableModelListener(this::handleLiveEdit);
     }
 
     private JButton createActionButton(String text, Color bg) {
         JButton btn = new JButton(text);
-        btn.setPreferredSize(new Dimension(120, 36));
+        btn.setPreferredSize(new Dimension(130, 38));
         btn.setBackground(bg);
         btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        btn.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 11));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.putClientProperty(FlatClientProperties.STYLE, "arc: 6; borderWidth: 0; focusWidth: 0;");
+        btn.putClientProperty(FlatClientProperties.STYLE, "arc: 8; borderWidth: 0; focusWidth: 0;");
         return btn;
     }
 
@@ -189,18 +217,14 @@ public class BarangMenuFrame extends JPanel {
         JTextField stockF = new JTextField();
         JTextField locF = new JTextField();
 
-        // --- LOGIKA ENTER KEY (FOKUS PINDAH) ---
-        nameF.addActionListener(e -> stockF.requestFocus()); // Enter di Name -> pindah ke Stock
-        stockF.addActionListener(e -> locF.requestFocus()); // Enter di Stock -> pindah ke Location
+        nameF.addActionListener(e -> stockF.requestFocus());
+        stockF.addActionListener(e -> locF.requestFocus());
 
-        // Logika khusus di Location: Tekan Enter langsung klik "OK" pada Dialog
         locF.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(locF);
             if (window instanceof JDialog dialog) {
-                // Cari tombol OK secara otomatis
                 JButton okButton = findOKButton(dialog);
-                if (okButton != null)
-                    okButton.doClick();
+                if (okButton != null) okButton.doClick();
             }
         });
 
@@ -210,51 +234,29 @@ public class BarangMenuFrame extends JPanel {
                 "Location:", locF
         };
 
-        // Tampilkan Dialog
-        int option = JOptionPane.showConfirmDialog(this, message, "Register New Item (Fast Entry)",
+        int option = JOptionPane.showConfirmDialog(this, message, "Register New Item",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (option == JOptionPane.OK_OPTION) {
             try {
-                // Validasi sederhana
-                if (nameF.getText().isEmpty())
-                    throw new Exception("Name cannot be empty");
-
+                if (nameF.getText().isEmpty()) throw new Exception("Name cannot be empty");
                 Barang b = new Barang(nameF.getText(), Integer.parseInt(stockF.getText()), locF.getText());
                 controller.insertBarang(user, b);
-
-                // Simpan log
                 activityController.insertLogActivity(user, "CREATE", "BARANG", 0, "Added new item: " + b.getName());
-
-                loadData(); // Refresh tabel
-
-                // --- LOOPING OTOMATIS ---
-                // Setelah klik OK, panggil lagi dirinya sendiri agar dialog muncul kembali
+                loadData();
                 SwingUtilities.invokeLater(this::insertBarang);
-
-            } catch (NumberFormatException ex) {
-                showEnterpriseError("Stock must be a number!");
             } catch (Exception ex) {
                 showEnterpriseError("Input Error: " + ex.getMessage());
             }
         }
     }
 
-    // Helper untuk mencari tombol OK di dalam JOptionPane
     private JButton findOKButton(Container container) {
         for (Component c : container.getComponents()) {
-            switch (c) {
-                case JButton b -> {
-                    if (b.getText().equalsIgnoreCase("OK"))
-                        return b;
-                }
-                case Container container1 -> {
-                    JButton b = findOKButton(container1);
-                    if (b != null)
-                        return b;
-                }
-                default -> {
-                }
+            if (c instanceof JButton b && b.getText().equalsIgnoreCase("OK")) return b;
+            if (c instanceof Container c1) {
+                JButton b = findOKButton(c1);
+                if (b != null) return b;
             }
         }
         return null;
@@ -285,8 +287,8 @@ public class BarangMenuFrame extends JPanel {
                         loadData();
                     }
                 }
-            } catch (HeadlessException | NumberFormatException e) {
-                showEnterpriseError("Format ID salah.");
+            } catch (Exception e) {
+                showEnterpriseError("Format ID atau Data salah.");
             }
         }
     }

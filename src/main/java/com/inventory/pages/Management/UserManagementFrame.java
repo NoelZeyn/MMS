@@ -146,7 +146,6 @@ public class UserManagementFrame extends JPanel {
     }
 
     private void setupTableStyle() {
-        // Pengaturan Style FlatLaf
         table.putClientProperty(FlatClientProperties.STYLE,
                 "rowHeight: 35; " +
                         "showHorizontalLines: true; " +
@@ -156,11 +155,9 @@ public class UserManagementFrame extends JPanel {
                         "selectionInactiveBackground: #F1F5F9;" // Warna saat tabel kehilangan fokus
         );
 
-        // Renderer untuk meratakan teks ke tengah (Opsional)
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Pastikan renderer juga menghormati warna seleksi
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -179,7 +176,6 @@ public class UserManagementFrame extends JPanel {
             }
         });
 
-        // Pasang editor dropdown untuk Role dan Status
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JComboBox<>(ROLE_OPTIONS)));
         table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox<>(STATUS_OPTIONS)));
 
@@ -269,7 +265,7 @@ public class UserManagementFrame extends JPanel {
 
         Object[] fields = { "Username:", nameF, "Password:", passF, "NID:", nidF, "Role:", roleF, "Department:", subF };
 
-        int opt = JOptionPane.showConfirmDialog(this, fields, "Register User (Fast Entry)",
+        int opt = JOptionPane.showConfirmDialog(this, fields, "Fast Entry - Register User",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (opt == JOptionPane.OK_OPTION) {

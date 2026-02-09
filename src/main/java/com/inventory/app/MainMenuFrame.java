@@ -1,7 +1,7 @@
 package com.inventory.app;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout; // Import Dashboard sungguhan
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -44,7 +44,7 @@ public class MainMenuFrame extends JFrame {
     private void setupFrame() {
         setTitle("MMS ENTERPRISE - Management System");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1280, 800); // Sedikit lebih lebar untuk kenyamanan Dashboard
+        setSize(1280, 800);
         setLocationRelativeTo(null);
     }
 
@@ -52,15 +52,12 @@ public class MainMenuFrame extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         setContentPane(mainPanel);
 
-        // --- SIDEBAR ---
         mainPanel.add(createSidebar(), BorderLayout.WEST);
 
-        // --- CONTENT AREA (CARD LAYOUT) ---
         cardLayout = new CardLayout();
         contentArea = new JPanel(cardLayout);
         contentArea.setBackground(UIConfig.BG_LIGHT);
 
-        // Mendaftarkan Halaman Sungguhan
         contentArea.add(new DashboardFrame(user), "DASHBOARD");
         contentArea.add(new BarangMenuFrame(user), "INVENTORY");
         contentArea.add(new RequisitionFrame(user), "REQUISITION");
@@ -75,7 +72,7 @@ public class MainMenuFrame extends JFrame {
 
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel(new BorderLayout());
-        sidebar.setBackground(new Color(15, 23, 42)); // Warna Slate 900 (Lebih modern)
+        sidebar.setBackground(new Color(15, 23, 42)); 
         sidebar.setPreferredSize(new Dimension(260, 0));
 
         // Brand Area (Logo/Nama Perusahaan)

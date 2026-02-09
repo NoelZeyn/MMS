@@ -77,32 +77,40 @@ public class RequisitionRepository {
         }
     }
 
-    public List<Requisition> getAllRequisitions() throws Exception {
-        // PERBAIKAN: Tambahkan userId ke dalam SELECT
-        String sql = "SELECT id, userId, name, specification, quantity, unitPrice, totalPrice, status, vendor, justification FROM requisitions";
-        List<Requisition> requisitionList = new ArrayList<>();
+public List<Requisition> getAllRequisitions() throws Exception {
+    // Gunakan JOIN untuk mengambil kolom 'name' dari tabel users
+    String sql = """
+            SELECT r.*, u.username as requesterName 
+            FROM requisitions r 
+            INNER JOIN users u ON r.userId = u.id
+            """;
+    List<Requisition> requisitionList = new ArrayList<>();
 
-        try (Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+    try (Connection conn = DatabaseUtil.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                requisitionList.add(new Requisition(
-                        rs.getInt("id"),
-                        rs.getInt("userId"), // Sekarang kolom ini sudah ada di SELECT
-                        rs.getString("name"),
-                        rs.getString("specification"),
-                        rs.getInt("quantity"),
-                        rs.getInt("unitPrice"),
-                        rs.getInt("totalPrice"),
-                        RequisitionStatus.valueOf(rs.getString("status")),
-                        rs.getString("vendor"),
-                        rs.getString("justification")));
-            }
+        while (rs.next()) {
+            Requisition req = new Requisition(
+                    rs.getInt("id"),
+                    rs.getInt("userId"),
+                    rs.getString("name"),
+                    rs.getString("specification"),
+                    rs.getInt("quantity"),
+                    rs.getInt("unitPrice"),
+                    rs.getInt("totalPrice"),
+                    RequisitionStatus.valueOf(rs.getString("status")),
+                    rs.getString("vendor"),
+                    rs.getString("justification"));
+            
+            // Masukkan nama requester ke field tambahan di model jika ada
+            req.setRequesterName(rs.getString("requesterName")); 
+            
+            requisitionList.add(req);
         }
-        return requisitionList;
     }
-
+    return requisitionList;
+}
     public Requisition getRequisitionById(int id) throws Exception {
         String sql = "SELECT id, userId, name, specification, quantity, unitPrice, totalPrice, status, vendor, justification FROM requisitions WHERE id = ?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -126,4 +134,38 @@ public class RequisitionRepository {
         }
         return null;
     }
+
+    public List<Requisition> getRequisitionsByStatus(RequisitionStatus status) throws Exception {
+    String sql = """
+            SELECT r.*, u.username as requesterName 
+            FROM requisitions r 
+            INNER JOIN users u ON r.userId = u.id
+            WHERE r.status = ?
+            """;
+    List<Requisition> list = new ArrayList<>();
+
+    try (Connection conn = DatabaseUtil.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setString(1, status.name());
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Requisition req = new Requisition(
+                        rs.getInt("id"),
+                        rs.getInt("userId"),
+                        rs.getString("name"),
+                        rs.getString("specification"),
+                        rs.getInt("quantity"),
+                        rs.getInt("unitPrice"),
+                        rs.getInt("totalPrice"),
+                        RequisitionStatus.valueOf(rs.getString("status")),
+                        rs.getString("vendor"),
+                        rs.getString("justification"));
+                req.setRequesterName(rs.getString("requesterName"));
+                list.add(req);
+            }
+        }
+    }
+    return list;
+}
 }

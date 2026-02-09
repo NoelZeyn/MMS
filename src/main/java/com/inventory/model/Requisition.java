@@ -11,8 +11,9 @@ public class Requisition {
     private RequisitionStatus status;
     private String vendor;
     private String justification;
+    private String requesterName;
+    private String requesterNID;
 
-    // Constructor untuk INSERT (Tanpa ID)
     public Requisition(int userId, String name, String specification, int quantity, int unitPrice, int totalPrice,
             RequisitionStatus status, String vendor, String justification) {
         this.userId = userId;
@@ -26,7 +27,6 @@ public class Requisition {
         this.justification = justification;
     }
 
-    // Constructor untuk SELECT/UPDATE (Dengan ID)
     public Requisition(int id, int userId, String name, String specification, int quantity, int unitPrice,
             int totalPrice, RequisitionStatus status, String vendor, String justification) {
         this.id = id;
@@ -117,4 +117,19 @@ public class Requisition {
         return justification;
     }
 
+    public void setRequesterName(String requesterName) {
+        this.requesterName = requesterName;
+    }
+
+    public String getRequesterName() {
+        return requesterName;
+    }
+
+    public void setRequesterNID (String requesterNID) {
+        this.requesterNID = requesterNID;
+    }
+
+    public String getRequesterNID(){
+        return requesterNID;
+    }
 }

@@ -20,7 +20,6 @@ public class User {
     }
 
         public User(String username, String NID, String passwordHash, String role, String status, int subBidangId) {
-        // this.id = id;
         this.username = username;
         this.NID = NID;
         this.passwordHash = passwordHash;
@@ -97,10 +96,10 @@ public class User {
     }
 
     public boolean isBudget() {
-        throw new UnsupportedOperationException("Unimplemented method 'isBudget'");
+        return "BUDGETER".equals(role);
     }
 
     public boolean isAsman() {
-        throw new UnsupportedOperationException("Unimplemented method 'isAsman'");
+        return "ASMAN".equals(role);
     }
 }

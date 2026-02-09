@@ -5,14 +5,12 @@ public class SubBidang {
     private String name;
     private int bidangId;
 
-    // Constructor untuk existing record (dengan id)
     public SubBidang(int id, String name, int bidangId) {
         this.id = id;
         this.name = name;
         this.bidangId = bidangId;
     }
 
-    // Constructor untuk new record (tanpa id)
     public SubBidang(String name, int bidangId) {
         this.name = name;
         this.bidangId = bidangId;
@@ -40,7 +38,7 @@ public class SubBidang {
 
     @Override
     public String toString() {
-        return name; // tampil NAMA, bukan alamat object
+        return name;
     }
 
 }

@@ -95,7 +95,8 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 6;
         gbc.insets = new Insets(25, 30, 10, 30);
         card.add(registerButton, gbc);
-        // Footer Section (Referensi dari LoginFrame)
+
+        
         JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         footer.setOpaque(false);
 
@@ -147,7 +148,7 @@ public class RegisterFrame extends JFrame {
             return;
         }
 
-        int subBidangId = subBidang.getId(); // INT, sesuai DB
+        int subBidangId = subBidang.getId();
 
         try {
             authService.register(nid, user, pass, role, subBidangId);
