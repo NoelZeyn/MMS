@@ -18,7 +18,7 @@ public class SubBidangRepository {
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            java.util.List<SubBidang> activities = new ArrayList<>();
+            List<SubBidang> activities = new ArrayList<>();
             while (rs.next()) {
                 SubBidang activity = new SubBidang(
                         rs.getInt("id"),

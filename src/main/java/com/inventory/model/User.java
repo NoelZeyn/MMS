@@ -76,4 +76,6 @@ public class User {
     public boolean isUser() { return "USER".equals(role); }
     public boolean isBudget() { return "BUDGETER".equals(role); }
     public boolean isAsman() { return "ASMAN".equals(role); }
+    public boolean isSuperAdmin() { return "SUPERADMIN".equals(role); }
+
 }

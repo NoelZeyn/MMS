@@ -12,7 +12,7 @@ public class UserActivityService {
     private final UserActivityRepository repository = new UserActivityRepository();
 
     private void authorize(User user) {
-        if (!user.isAdmin() && !user.isManager()) {
+        if (user == null || (!user.isAdmin() && !user.isManager() && !user.isSuperAdmin())) {
             throw new AuthException("Akses ditolak: role tidak memiliki izin");
         }
     }

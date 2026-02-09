@@ -164,12 +164,10 @@ public class RequisitionService {
     }
 
     public List<Requisition> getAllRequisitions(User user) throws Exception {
-        authorize(user);
         return repository.getAllRequisitions();
     }
 
     public Requisition getRequisitionById(User user, int id) throws Exception {
-        authorize(user);
         Requisition req = repository.getRequisitionById(id);
         if (req == null)
             throw new ValidationException("Requisition tidak ditemukan");
@@ -212,30 +210,25 @@ public class RequisitionService {
 
     public List<Requisition> getMyPendingTasks(User user) throws Exception {
         authorize(user);
-
         RequisitionStatus targetStatus = null;
 
-        // Tentukan target status berdasarkan role
         if (user.isAsman())
             targetStatus = RequisitionStatus.PENDING_ASMAN;
         else if (user.isManager())
             targetStatus = RequisitionStatus.PENDING_MANAGER;
         else if (user.isBudget())
             targetStatus = RequisitionStatus.PENDING_BUDGET;
-        else if (user.isAdmin())
+        else if (user.isAdmin() || user.isSuperAdmin())
             targetStatus = RequisitionStatus.PENDING_ADMIN;
 
-        // Jika staff atau role tidak punya workflow approval, kembalikan list kosong
         if (targetStatus == null)
             return new ArrayList<>();
 
         return repository.getRequisitionsByStatus(targetStatus);
     }
 
-    // Tambahan: Untuk Staff melihat history pengajuannya sendiri
     public List<Requisition> getRequisitionsByStaff(User user) throws Exception {
         authorize(user);
-        // Anda bisa menambahkan method repository.getByUserId(user.getId()) jika perlu
         return repository.getAllRequisitions().stream()
                 .filter(r -> r.getUserId() == user.getId())
                 .toList();
@@ -243,7 +236,6 @@ public class RequisitionService {
 
     public void deleteRequisitionById(User user, int id) {
         authorize(user);
-        // Opsional: Batasi hapus hanya jika status masih awal
         repository.delete(id);
     }
 }

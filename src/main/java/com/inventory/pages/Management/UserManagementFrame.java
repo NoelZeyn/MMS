@@ -54,7 +54,7 @@ public class UserManagementFrame extends JPanel {
     private static final String[] STATUS_OPTIONS = { "ACTIVE", "INACTIVE", "SUSPENDED", "PENDING" };
 
     public UserManagementFrame(User user) {
-        if (!user.isAdmin() && !user.isManager()) {
+        if (!user.isSuperAdmin()) {
             throw new SecurityException("Unauthorized Access");
         }
         this.currentUser = user;
@@ -137,6 +137,7 @@ public class UserManagementFrame extends JPanel {
         tableModel.addTableModelListener(this::handleLiveUpdate);
     }
 
+    // CHATGPT
     private void setupTableStyle() {
         table.putClientProperty(FlatClientProperties.STYLE,
                 "rowHeight: 40; " +
@@ -200,7 +201,7 @@ public class UserManagementFrame extends JPanel {
                         u.getNID(), 
                         u.getRole(), 
                         u.getStatus(), 
-                        u.getSubBidangName() // Memanggil field String hasil Join
+                        u.getSubBidangName(), // Memanggil field String hasil Join
                 });
             }
         } catch (Exception e) {
@@ -278,6 +279,7 @@ public class UserManagementFrame extends JPanel {
         }
     }
 
+    // CHATGPT
     private JButton findOKButton(Container container) {
         if (container == null) return null;
         for (Component c : container.getComponents()) {

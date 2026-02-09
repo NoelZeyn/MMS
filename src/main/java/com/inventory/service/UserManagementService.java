@@ -10,7 +10,7 @@ public class UserManagementService {
     private final UserManagementRepository repository = new UserManagementRepository();
 
     private void authorize(User user) {
-        if (user == null || (!user.isAdmin() && !user.isManager())) {
+        if (user == null || (!user.isAdmin() && !user.isManager() && !user.isSuperAdmin())) {
             throw new AuthException("Akses ditolak: Anda tidak memiliki izin administratif.");
         }
     }

@@ -18,7 +18,7 @@ public class UserActivityRepository {
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            java.util.List<UserActivity> activities = new ArrayList<>();
+            List<UserActivity> activities = new ArrayList<>();
             while (rs.next()) {
                 UserActivity activity = new UserActivity(
                         rs.getInt("id"),

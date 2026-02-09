@@ -133,7 +133,6 @@ public class BarangMenuFrame extends JPanel {
 
         int id = (int) tableModel.getValueAt(selectedRow, 0);
         String name = tableModel.getValueAt(selectedRow, 1).toString();
-        int currentStock = (int) tableModel.getValueAt(selectedRow, 2);
 
         JPanel panel = new JPanel(new GridLayout(3, 1, 5, 5));
         JLabel infoLabel = new JLabel("Recording usage for: " + name);

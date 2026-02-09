@@ -61,9 +61,11 @@ public class MainMenuFrame extends JFrame {
         contentArea.add(new DashboardFrame(user), "DASHBOARD");
         contentArea.add(new BarangMenuFrame(user), "INVENTORY");
         contentArea.add(new RequisitionFrame(user), "REQUISITION");
-        contentArea.add(new ReportMenuFrame(user), "REPORTS");
+        if (!user.isUser()) {
+            contentArea.add(new ReportMenuFrame(user), "REPORTS");
+        }
 
-        if (user.isAdmin() || user.isManager()) {
+        if (user.isSuperAdmin()) {
             contentArea.add(new UserManagementFrame(user), "MANAGE_USER");
         }
 
@@ -72,14 +74,14 @@ public class MainMenuFrame extends JFrame {
 
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel(new BorderLayout());
-        sidebar.setBackground(new Color(15, 23, 42)); 
+        sidebar.setBackground(new Color(15, 23, 42));
         sidebar.setPreferredSize(new Dimension(260, 0));
 
         // Brand Area (Logo/Nama Perusahaan)
         JPanel brandPanel = new JPanel(new BorderLayout());
         brandPanel.setOpaque(false);
         brandPanel.setBorder(new EmptyBorder(30, 25, 30, 25));
-        
+
         JLabel brandLabel = new JLabel("MMS ENTERPRISE");
         brandLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         brandLabel.setForeground(Color.WHITE);
@@ -92,15 +94,25 @@ public class MainMenuFrame extends JFrame {
         menuPanel.setBorder(new EmptyBorder(0, 15, 20, 15));
 
         // Menambahkan Navigasi
-        menuPanel.add(createNavButton("DASHBOARD", "DASHBOARD"));
+        if (!user.isUser()) {
+            menuPanel.add(createNavButton("DASHBOARD", "DASHBOARD"));
+        }
         menuPanel.add(Box.createVerticalStrut(8));
         menuPanel.add(createNavButton("INVENTORY", "INVENTORY"));
         menuPanel.add(Box.createVerticalStrut(8));
         menuPanel.add(createNavButton("PURCHASE REQUEST", "REQUISITION"));
         menuPanel.add(Box.createVerticalStrut(8));
-        menuPanel.add(createNavButton("REPORTS", "REPORTS"));
+        if (!user.isUser()) {
+            menuPanel.add(Box.createVerticalStrut(25)); // Spasi antar grup
+            JLabel lblAdmin = new JLabel("REPORTS");
+            lblAdmin.setFont(new Font("Segoe UI", Font.BOLD, 10));
+            lblAdmin.setForeground(new Color(71, 85, 105));
+            lblAdmin.setBorder(new EmptyBorder(0, 15, 10, 0));
+            menuPanel.add(lblAdmin);
+            menuPanel.add(createNavButton("REPORTS", "REPORTS"));
+        }
 
-        if (user.isAdmin() || user.isManager()) {
+        if (user.isSuperAdmin()) {
             menuPanel.add(Box.createVerticalStrut(25)); // Spasi antar grup
             JLabel lblAdmin = new JLabel(" ADMINISTRATION");
             lblAdmin.setFont(new Font("Segoe UI", Font.BOLD, 10));
@@ -121,13 +133,12 @@ public class MainMenuFrame extends JFrame {
         JPanel footer = new JPanel(new BorderLayout());
         footer.setOpaque(false);
         footer.setBorder(new CompoundBorder(
-            new MatteBorder(1, 0, 0, 0, new Color(30, 41, 59)),
-            new EmptyBorder(20, 20, 20, 20)
-        ));
+                new MatteBorder(1, 0, 0, 0, new Color(30, 41, 59)),
+                new EmptyBorder(20, 20, 20, 20)));
 
         JPanel userDetail = new JPanel(new GridLayout(2, 1));
         userDetail.setOpaque(false);
-        
+
         JLabel nameLabel = new JLabel(user.getUsername().toUpperCase());
         nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
         nameLabel.setForeground(Color.WHITE);
@@ -143,12 +154,13 @@ public class MainMenuFrame extends JFrame {
         btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Logout from system?", "Exit", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+            if (confirm == JOptionPane.YES_OPTION)
+                System.exit(0);
         });
 
         footer.add(userDetail, BorderLayout.WEST);
         footer.add(btnLogout, BorderLayout.EAST);
-        
+
         return footer;
     }
 

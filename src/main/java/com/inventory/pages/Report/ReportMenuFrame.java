@@ -77,7 +77,7 @@ public class ReportMenuFrame extends JPanel {
         // --- 3. Action Buttons ---
         gbc.insets = new Insets(8, 45, 8, 45);
 
-        JButton viewButton = createEnterpriseButton("VIEW STOCK LEDGER", new Color(51, 65, 85));
+        JButton viewButton = createEnterpriseButton("VIEW INVENTORY", new Color(51, 65, 85));
         gbc.gridy = 2;
         card.add(viewButton, gbc);
 
@@ -126,7 +126,7 @@ public class ReportMenuFrame extends JPanel {
         }
 
         JTable table = new JTable(model);
-        
+
         table.putClientProperty(FlatClientProperties.STYLE,
                 "showHorizontalLines: true; showVerticalLines: false; rowHeight: 32; selectionBackground: #f1f5f9; selectionForeground: #0f172a");
 
