@@ -3,7 +3,6 @@ D:\JavaPro\MMS\src\main\java\com\inventory\app\InventoryApplication.java
 D:\JavaPro\MMS\src\main\java\com\inventory\app\MainMenuFrame.java
 D:\JavaPro\MMS\src\main\java\com\inventory\audit\AuditLogger.java
 D:\JavaPro\MMS\src\main\java\com\inventory\controller\BarangController.java
-D:\JavaPro\MMS\src\main\java\com\inventory\controller\PeminjamanController.java
 D:\JavaPro\MMS\src\main\java\com\inventory\controller\RequisitionController.java
 D:\JavaPro\MMS\src\main\java\com\inventory\controller\SubBidangController.java
 D:\JavaPro\MMS\src\main\java\com\inventory\controller\UserActivityController.java
@@ -17,7 +16,6 @@ D:\JavaPro\MMS\src\main\java\com\inventory\menu\MainMenu.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\Barang.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\Bidang.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\Kategori.java
-D:\JavaPro\MMS\src\main\java\com\inventory\model\Peminjaman.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\Requisition.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\RequisitionStatus.java
 D:\JavaPro\MMS\src\main\java\com\inventory\model\SubBidang.java
@@ -33,7 +31,6 @@ D:\JavaPro\MMS\src\main\java\com\inventory\pages\UI\DashboardFrame.java
 D:\JavaPro\MMS\src\main\java\com\inventory\pages\UI\UIComponents.java
 D:\JavaPro\MMS\src\main\java\com\inventory\pages\UI\UIConfig.java
 D:\JavaPro\MMS\src\main\java\com\inventory\repository\BarangRepository.java
-D:\JavaPro\MMS\src\main\java\com\inventory\repository\PeminjamanRepository.java
 D:\JavaPro\MMS\src\main\java\com\inventory\repository\RequisitionRepository.java
 D:\JavaPro\MMS\src\main\java\com\inventory\repository\SubBidangRepository.java
 D:\JavaPro\MMS\src\main\java\com\inventory\repository\UserActivityRepository.java
@@ -44,7 +41,6 @@ D:\JavaPro\MMS\src\main\java\com\inventory\security\PasswordHasher.java
 D:\JavaPro\MMS\src\main\java\com\inventory\security\StatusChecker.java
 D:\JavaPro\MMS\src\main\java\com\inventory\service\AuthService.java
 D:\JavaPro\MMS\src\main\java\com\inventory\service\BarangService.java
-D:\JavaPro\MMS\src\main\java\com\inventory\service\PeminjamanService.java
 D:\JavaPro\MMS\src\main\java\com\inventory\service\RequisitionService.java
 D:\JavaPro\MMS\src\main\java\com\inventory\service\SubBidangService.java
 D:\JavaPro\MMS\src\main\java\com\inventory\service\UserActivityService.java
