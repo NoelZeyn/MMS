@@ -31,8 +31,7 @@ public class SubBidangService {
             SubBidang subBidang = new SubBidang(name, bidangId);
             repository.insertSubBidang(subBidang);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("CRITICAL: Gagal mencatat");
+            System.err.println("CRITICAL: Gagal mencatat ");
         }
     }
 

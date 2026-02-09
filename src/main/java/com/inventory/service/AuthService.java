@@ -14,15 +14,10 @@ public class AuthService {
     public User login(String username, String password) throws Exception {
 
         User user = userRepository.findByUsername(username);
-        if (user == null) {
+        String hashedInput = PasswordHasher.hash(password);
+        if (user == null || !hashedInput.equals(user.getPasswordHash())) {
             throw new AuthException("Username atau Password salah");
         }
-
-        String hashedInput = PasswordHasher.hash(password);
-        if (!hashedInput.equals(user.getPasswordHash())) {
-            throw new AuthException("Password salah");
-        }
-
         String status = statusChecker.getUserStatus(username);
         if (!status.equals("ACTIVE")) {
             throw new AuthException("Akun tidak aktif: " + status);

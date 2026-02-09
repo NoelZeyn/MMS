@@ -1,5 +1,34 @@
 package com.inventory.pages.Inventory;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.HeadlessException;
+import java.awt.Window;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.inventory.controller.BarangController;
 import com.inventory.controller.UserActivityController;
@@ -8,14 +37,6 @@ import com.inventory.model.User;
 import com.inventory.pages.UI.UIConfig;
 import com.inventory.service.BarangService;
 import com.inventory.service.UserActivityService;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class BarangMenuFrame extends JPanel {
     private final User user;
@@ -156,7 +177,7 @@ public class BarangMenuFrame extends JPanel {
                 Barang updated = new Barang(id, name, stok, lokasi);
                 controller.updateBarang(user, updated);
                 activityController.insertLogActivity(user, "UPDATE", "BARANG", id, "Live edit on " + name);
-            } catch (Exception ex) {
+            } catch (NumberFormatException ex) {
                 showEnterpriseError("Gagal update: Format data salah.");
                 loadData();
             }
@@ -175,8 +196,7 @@ public class BarangMenuFrame extends JPanel {
         // Logika khusus di Location: Tekan Enter langsung klik "OK" pada Dialog
         locF.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(locF);
-            if (window instanceof JDialog) {
-                JDialog dialog = (JDialog) window;
+            if (window instanceof JDialog dialog) {
                 // Cari tombol OK secara otomatis
                 JButton okButton = findOKButton(dialog);
                 if (okButton != null)
@@ -223,14 +243,18 @@ public class BarangMenuFrame extends JPanel {
     // Helper untuk mencari tombol OK di dalam JOptionPane
     private JButton findOKButton(Container container) {
         for (Component c : container.getComponents()) {
-            if (c instanceof JButton) {
-                JButton b = (JButton) c;
-                if (b.getText().equalsIgnoreCase("OK"))
-                    return b;
-            } else if (c instanceof Container) {
-                JButton b = findOKButton((Container) c);
-                if (b != null)
-                    return b;
+            switch (c) {
+                case JButton b -> {
+                    if (b.getText().equalsIgnoreCase("OK"))
+                        return b;
+                }
+                case Container container1 -> {
+                    JButton b = findOKButton(container1);
+                    if (b != null)
+                        return b;
+                }
+                default -> {
+                }
             }
         }
         return null;
@@ -261,7 +285,7 @@ public class BarangMenuFrame extends JPanel {
                         loadData();
                     }
                 }
-            } catch (Exception e) {
+            } catch (HeadlessException | NumberFormatException e) {
                 showEnterpriseError("Format ID salah.");
             }
         }

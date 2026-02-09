@@ -33,7 +33,7 @@ public class UserManagementService {
                 throw new ValidationException("User tidak ditemukan");
             }
             return user;
-        } catch (Exception e) {
+        } catch (ValidationException e) {
             throw new ValidationException("Error saat mengambil user");
         }
     }

@@ -1,8 +1,8 @@
 package com.inventory.menu;
 
-import com.inventory.model.User;
-
 import java.util.Scanner;
+
+import com.inventory.model.User;
 
 public class MainMenu {
 
@@ -24,14 +24,12 @@ public class MainMenu {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1":
-                    new BarangMenu(scanner, user).start();
-                    break;
-                case "2":
+                case "1" -> new BarangMenu(scanner, user).start();
+                case "2" -> {
                     System.out.println("Keluar dari aplikasi.");
                     return;
-                default:
-                    System.out.println("Opsi tidak valid.");
+                }
+                default -> System.out.println("Opsi tidak valid.");
             }
         }
     }

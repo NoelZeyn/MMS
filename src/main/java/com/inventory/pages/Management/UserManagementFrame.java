@@ -1,5 +1,35 @@
 package com.inventory.pages.Management;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.HeadlessException;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.inventory.controller.SubBidangController;
 import com.inventory.controller.UserActivityController;
@@ -11,14 +41,6 @@ import com.inventory.security.PasswordHasher;
 import com.inventory.service.SubBidangService;
 import com.inventory.service.UserActivityService;
 import com.inventory.service.UserManagementService;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class UserManagementFrame extends JPanel {
     private final User currentUser;
@@ -276,8 +298,8 @@ public class UserManagementFrame extends JPanel {
         for (Component c : container.getComponents()) {
             if (c instanceof JButton && ((JButton) c).getText().equalsIgnoreCase("OK")) {
                 return (JButton) c;
-            } else if (c instanceof Container) {
-                JButton b = findOKButton((Container) c);
+            } else if (c instanceof Container container1) {
+                JButton b = findOKButton(container1);
                 if (b != null)
                     return b;
             }
@@ -321,7 +343,7 @@ public class UserManagementFrame extends JPanel {
                     JOptionPane.showMessageDialog(this, "Password updated.");
                 }
             }
-        } catch (Exception e) {
+        } catch (HeadlessException | NumberFormatException e) {
             showEnterpriseError("Invalid input ID.");
         }
     }

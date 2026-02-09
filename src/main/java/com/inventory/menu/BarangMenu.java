@@ -1,12 +1,12 @@
 package com.inventory.menu;
 
+import java.util.Scanner;
+
 import com.inventory.controller.BarangController;
 import com.inventory.model.Barang;
 import com.inventory.model.User;
 import com.inventory.security.InputSanitizer;
 import com.inventory.service.BarangService;
-
-import java.util.Scanner;
 
 public class BarangMenu {
 
@@ -32,19 +32,13 @@ public class BarangMenu {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1":
-                    insertBarang();
-                    break;
-                case "2":
-                    getAllBarang();
-                    break;
-                case "3":
-                    manageDetailBarang();
-                    break;
-                case "4":
+                case "1" -> insertBarang();
+                case "2" -> getAllBarang();
+                case "3" -> manageDetailBarang();
+                case "4" -> {
                     return;
-                default:
-                    System.out.println("Opsi tidak valid.");
+                }
+                default -> System.out.println("Opsi tidak valid.");
             }
         }
     }
@@ -62,7 +56,7 @@ public class BarangMenu {
 
             controller.insertBarang(user, new Barang(nama, stok, lokasi));
             System.out.println("Barang berhasil ditambahkan.");
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Terjadi Error: " + e.getMessage());
         }
     }
@@ -104,24 +98,23 @@ public class BarangMenu {
                 String choice = scanner.nextLine();
 
                 switch (choice) {
-                    case "1":
+                    case "1" -> {
                         kurangiStok(barang.getId());
                         barang = controller.getBarangById(barang.getId());
-                        break;
-                    case "2":
-                        perbaruiBarang(barang);
-                        break;
-                    case "3":
+                    }
+                    case "2" -> perbaruiBarang(barang);
+                    case "3" -> {
                         controller.deleteBarangById(barang.getId());
                         System.out.println("Barang berhasil dihapus.");
                         return;
-                    case "4":
+                    }
+                    case "4" -> {
                         return;
-                    default:
-                        System.out.println("Opsi tidak valid.");
+                    }
+                    default -> System.out.println("Opsi tidak valid.");
                 }
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Terjadi Error: " + e.getMessage());
         }
     }
@@ -132,7 +125,7 @@ public class BarangMenu {
             int jumlah = InputSanitizer.sanitizeInt(scanner.nextLine());
             controller.kurangiStok(id, jumlah);
             System.out.println("Stok berhasil dikurangi.");
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Terjadi Error: " + e.getMessage());
         }
     }
@@ -150,7 +143,7 @@ public class BarangMenu {
 
             controller.updateBarang(user, barang);
             System.out.println("Barang berhasil diperbarui.");
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Terjadi Error: " + e.getMessage());
         }
     }

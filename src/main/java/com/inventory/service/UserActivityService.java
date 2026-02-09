@@ -36,7 +36,6 @@ public class UserActivityService {
                     timestamp);
             repository.insertLogActivity(activityLog);
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("CRITICAL: Gagal mencatat log untuk " + activity);
         }
     }
